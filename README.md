@@ -4,6 +4,10 @@ System Information Dashboard is a lightweight Windows utility that gives you a c
 
 From a single window you can monitor CPU usage, RAM usage, disk space, system uptime, and basic OS information – without digging through multiple Windows menus.
 
+[![Latest release](https://img.shields.io/github/v/release/<your-github-username>/SystemInformationDashboard)](https://github.com/<your-github-username>/SystemInformationDashboard/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/<your-github-username>/SystemInformationDashboard/total)](https://github.com/<your-github-username>/SystemInformationDashboard/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
+
 ---
 
 ## Features
@@ -37,8 +41,8 @@ System Information Dashboard is portable – there is no installer.
 
 1. **Download the EXE**
    - From the **GitHub Releases** page:  
-     `SystemInformationDashboard.exe`  
-   - Or from the official website: **gexsoft.org** (System Information Dashboard page).
+     [`SystemInformationDashboard.exe`](https://github.com/<your-github-username>/SystemInformationDashboard/releases/latest)
+   - Or from the official website: [gexsoft.org](https://gexsoft.org) (System Information Dashboard page).
 
 2. **Place it wherever you like**
    - For example: `C:\Tools\SystemInformationDashboard\`
@@ -65,7 +69,7 @@ System Information Dashboard is portable – there is no installer.
    - Uptime shows how long the system has been running.
    - OS info shows the Windows version and basic system details.
 
-3. **Refresh information (if available in your build)**
+3. **Refresh information**
    - Use the **Refresh** button (or automatic refresh interval, if enabled) to update the displayed values.
 
 4. **Export a report**
@@ -82,9 +86,8 @@ System Information Dashboard is portable – there is no installer.
 
 ## Screenshots
 
-> The paths below are examples. Create a `screenshots` folder in your repo and adjust filenames as needed.
+> Create a `screenshots` folder in your repo and adjust filenames as needed.
 
-```markdown
 ### Main Window
 
 ![System Information Dashboard – Main Window](screenshots/system-info-dashboard-main.png)
@@ -92,3 +95,41 @@ System Information Dashboard is portable – there is no installer.
 ### HTML Report Example
 
 ![System Information Dashboard – HTML Report](screenshots/system-info-dashboard-report.png)
+
+---
+
+## System Requirements
+
+- **OS:** Windows (tested on modern Windows versions)
+- **Installation:** Not required (portable EXE)
+- **Permissions:** Standard user account is usually enough for basic information
+
+---
+
+## Technical details
+
+- **Language:** Written in **AutoIt**.
+- **Build:** Compiled as a single **portable `.exe`** (no external DLLs or runtime installers required).
+- **Installation footprint:**  
+  - Does **not** require an installer.  
+  - Does **not** modify system files.  
+  - Does **not** add services or scheduled tasks.
+- **Registry usage:**  
+  - Does **not** rely on permanent registry entries for normal operation.  
+  - No configuration is required in the registry.
+- **Config & logs (if enabled):**  
+  - Any configuration or log files (e.g. reports) are stored in the same folder as the executable or in a user-selected location.
+- **Data access:**  
+  - Uses standard Windows APIs/WMI/Performance counters to read system information.  
+  - Read-only access – it **only reads** system metrics, it does not change system settings.
+- **Portability:**  
+  - Can be run from a local disk, external drive, or USB stick.  
+  - Suitable for inclusion in a technician’s portable tools kit.
+
+---
+
+## License
+
+This project is licensed under the **MIT License** – you’re free to use, modify and distribute it, as long as the license file is included.
+
+See the [`LICENSE`](LICENSE) file for details.
