@@ -41,7 +41,7 @@ System Information Dashboard is portable – there is no installer.
 
 1. **Download the EXE**
    - From the **GitHub Releases** page:  
-     [`SystemInformationDashboard.exe`](https://github.com/Gexos/SystemInformationDashboard/releases/latest)
+     [`SystemInformationDashboard.exe`](https://github.com/Gexos/System-Info-Dashboard/releases)
    - Or from the official website: [gexsoft.org](https://gexsoft.org) (System Information Dashboard page).
 
 2. **Place it wherever you like**
