@@ -1,38 +1,94 @@
-System Information Dashboard is a small, fast and portable tool designed to help you see what’s really going on inside your computer – without digging through multiple Windows menus.
+# System Information Dashboard
 
-From a single window you can monitor CPU usage, RAM usage, disk space, system uptime, and core OS information. It’s ideal for technicians, power users, or anyone who just wants a quick overview of their system status.
+System Information Dashboard is a lightweight Windows utility that gives you a clear, real-time view of your PC’s health and system details.
 
-You don’t need to install anything heavy, deal with ads, or sign up for an account. Just run the app and you immediately get a clean dashboard with the most important system info.
+From a single window you can monitor CPU usage, RAM usage, disk space, system uptime, and basic OS information – without digging through multiple Windows menus.
 
-What the app does
+---
 
-System Information Dashboard:
+## Features
 
-Shows live CPU usage
-See how busy your processor is in real time – useful for spotting apps that are slowing your system down.
+- **Live CPU usage**
+  - See how busy your processor is in real time.
 
-Monitors RAM (memory) usage
-Quickly check how much RAM is in use and how much is free, so you know if your system is running out of memory.
+- **RAM (memory) usage**
+  - Check how much memory is in use and how much is available.
 
-Displays disk usage
-View free and used space on your drives, so you can see when a disk is close to full.
+- **Disk usage overview**
+  - View used and free space on your drives to quickly spot full disks.
 
-Shows system uptime
-See how long your PC has been running since the last reboot – handy for troubleshooting and server/always-on machines.
+- **System uptime**
+  - See how long the system has been running since the last reboot.
 
-Provides OS and system details
-Basic information about your Windows version and system, so you have the important details in one place when you need them.
+- **OS & system information**
+  - Basic details about Windows version and system info in one place.
 
-Generates system reports
-Export your system information to a text or HTML report, so you can save it, send it to a technician, or keep it for documentation.
+- **Report export**
+  - Export the system information to a **TXT** or **HTML** report for documentation or support purposes.
 
-Lightweight and portable
-No complex installer, no background services. Just a simple executable you can keep on your USB stick or tools folder.
+- **Portable & lightweight**
+  - Single executable, no installation, no services, no bloat.
 
-Who it’s for
+---
 
-PC technicians who want a quick snapshot of a machine before working on it.
+## Installation
 
-Power users & gamers who like to keep an eye on resource usage.
+System Information Dashboard is portable – there is no installer.
 
-Home users who want an easy way to see “what’s going on” when the PC feels slow.
+1. **Download the EXE**
+   - From the **GitHub Releases** page:  
+     `SystemInformationDashboard.exe`  
+   - Or from the official website: **gexsoft.org** (System Information Dashboard page).
+
+2. **Place it wherever you like**
+   - For example: `C:\Tools\SystemInformationDashboard\`
+   - Or on a USB stick with your technician tools.
+
+3. **Run the application**
+   - Double-click `SystemInformationDashboard.exe`.
+   - No installation steps, no extra dependencies required on a standard Windows system.
+
+> Tip: You can create a desktop shortcut or pin it to the taskbar for quick access.
+
+---
+
+## Usage
+
+1. **Start the app**
+   - Run `SystemInformationDashboard.exe`.
+   - The main dashboard window will appear.
+
+2. **Read the main system overview**
+   - CPU usage bar/values show how busy your processor is.
+   - RAM usage shows used vs available memory.
+   - Disk section shows used/free space on your drives.
+   - Uptime shows how long the system has been running.
+   - OS info shows the Windows version and basic system details.
+
+3. **Refresh information (if available in your build)**
+   - Use the **Refresh** button (or automatic refresh interval, if enabled) to update the displayed values.
+
+4. **Export a report**
+   - Use the **menu** (for example: `File` → `Save Report`) or the **Export** buttons:
+     - **Export to TXT** – saves a plain text report.
+     - **Export to HTML** – saves a formatted HTML report.
+   - Choose where to save the file when prompted.
+   - You can then send this report to a technician, attach it to a ticket, or keep it for your own documentation.
+
+5. **Exit the app**
+   - Close the window normally, or use the menu entry (for example: `File` → `Exit`).
+
+---
+
+## Screenshots
+
+> The paths below are examples. Create a `screenshots` folder in your repo and adjust filenames as needed.
+
+```markdown
+### Main Window
+
+![System Information Dashboard – Main Window](screenshots/system-info-dashboard-main.png)
+
+### HTML Report Example
+
+![System Information Dashboard – HTML Report](screenshots/system-info-dashboard-report.png)
