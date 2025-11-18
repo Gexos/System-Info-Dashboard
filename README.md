@@ -4,8 +4,8 @@ System Information Dashboard is a lightweight Windows utility that gives you a c
 
 From a single window you can monitor CPU usage, RAM usage, disk space, system uptime, and basic OS information – without digging through multiple Windows menus.
 
-[![Latest release](https://img.shields.io/github/v/release/<your-github-username>/SystemInformationDashboard)](https://github.com/<your-github-username>/SystemInformationDashboard/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/<your-github-username>/SystemInformationDashboard/total)](https://github.com/<your-github-username>/SystemInformationDashboard/releases)
+[![Latest release](https://img.shields.io/github/v/release/gexos/SystemInformationDashboard)](https://github.com/gexos/SystemInformationDashboard/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/gexos/SystemInformationDashboard/total)](https://github.com/gexos/SystemInformationDashboard/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
 
 ---
