@@ -86,8 +86,6 @@ System Information Dashboard is portable – there is no installer.
 
 ## Screenshots
 
-> Create a `screenshots` folder in your repo and adjust filenames as needed.
-
 ### Main Window
 
 ![System Information Dashboard – Main Window](screenshots/system-info-dashboard-main.png)
