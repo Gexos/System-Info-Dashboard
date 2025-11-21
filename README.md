@@ -1,133 +1,244 @@
-# System Information Dashboard
+# System Info Dashboard
 
-System Information Dashboard is a lightweight Windows utility that gives you a clear, real-time view of your PC’s health and system details.
+**System Info Dashboard** is a lightweight system monitoring and diagnostics tool for Windows, written in [AutoIt](https://www.autoitscript.com/).
 
-From a single window you can monitor CPU usage, RAM usage, disk space, system uptime, and basic OS information – without digging through multiple Windows menus.
+It gives you a real-time view of:
 
-[![Latest release](https://img.shields.io/github/v/release/gexos/SystemInformationDashboard)](https://github.com/gexos/SystemInformationDashboard/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/gexos/SystemInformationDashboard/total)](https://github.com/gexos/SystemInformationDashboard/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
+- CPU usage and temperature  
+- RAM usage (percent and MB)  
+- Disk usage for all fixed drives  
+- Network status and basic diagnostics  
+- System & hardware information  
+- Running processes, with options to kill/force-kill them  
+
+> Open source project by **gexos (Giorgos Xanthopoulos)**
 
 ---
 
 ## Features
 
-- **Live CPU usage**
-  - See how busy your processor is in real time.
+### Main Dashboard
 
-- **RAM (memory) usage**
-  - Check how much memory is in use and how much is available.
-
-- **Disk usage overview**
-  - View used and free space on your drives to quickly spot full disks.
-
-- **System uptime**
-  - See how long the system has been running since the last reboot.
-
-- **OS & system information**
-  - Basic details about Windows version and system info in one place.
-
-- **Report export**
-  - Export the system information to a **TXT** or **HTML** report for documentation or support purposes.
-
-- **Portable & lightweight**
-  - Single executable, no installation, no services, no bloat.
-
----
-
-## Installation
-
-System Information Dashboard is portable – there is no installer.
-
-1. **Download the EXE**
-   - From the **GitHub Releases** page:  
-     [`SystemInformationDashboard.exe`](https://github.com/Gexos/System-Info-Dashboard/releases)
-   - Or from the official website: [gexsoft.org](https://gexsoft.org/systeminfodashboard.html) (System Information Dashboard page).
-
-2. **Place it wherever you like**
-   - For example: `C:\Tools\SystemInformationDashboard\`
-   - Or on a USB stick with your technician tools.
-
-3. **Run the application**
-   - Double-click `SystemInformationDashboard.exe`.
-   - No installation steps, no extra dependencies required on a standard Windows system.
-
-> Tip: You can create a desktop shortcut or pin it to the taskbar for quick access.
+- Live **CPU usage** via WMI, with color-coded load (green → orange → red).
+- **CPU temperature** (when sensors are available):
+  - Uses **LibreHardwareMonitor** WMI if available.
+  - Falls back to **OpenHardwareMonitor** WMI if available.
+  - Optionally falls back to ACPI (`MSAcpi_ThermalZoneTemperature`).
+- **RAM usage**:
+  - Displayed as a percentage.
+  - Also shown as **integer MB**: `used MB / total MB`.
+- **Disk usage**:
+  - Automatically detects all **fixed drives** (C:, D:, etc.).
+  - Shows percentage and GB used/total for each drive.
+- **System info**:
+  - Windows version & architecture.
+  - System uptime.
+  - Current system time.
+- **Battery & power** (on laptops):
+  - Battery level.
+  - Charging/discharging/AC/critical status.
+- Status bar with a compact summary:  
+  `CPU: x%   RAM: y%   Processes: N`
 
 ---
 
-## Usage
+### Network
 
-1. **Start the app**
-   - Run `SystemInformationDashboard.exe`.
-   - The main dashboard window will appear.
-
-2. **Read the main system overview**
-   - CPU usage bar/values show how busy your processor is.
-   - RAM usage shows used vs available memory.
-   - Disk section shows used/free space on your drives.
-   - Uptime shows how long the system has been running.
-   - OS info shows the Windows version and basic system details.
-
-3. **Refresh information**
-   - Use the **Refresh** button (or automatic refresh interval, if enabled) to update the displayed values.
-
-4. **Export a report**
-   - Use the **menu** (for example: `File` → `Save Report`) or the **Export** buttons:
-     - **Export to TXT** – saves a plain text report.
-     - **Export to HTML** – saves a formatted HTML report.
-   - Choose where to save the file when prompted.
-   - You can then send this report to a technician, attach it to a ticket, or keep it for your own documentation.
-
-5. **Exit the app**
-   - Close the window normally, or use the menu entry (for example: `File` → `Exit`).
+- **Network summary** in the main window:
+  - Computer name and active IP address.
+- **Network Details** window:
+  - WMI-based adapter details:
+    - Description, MAC address, IP, subnet, gateway, DNS, etc.
+- **Network Diagnostics** window:
+  - Pings:
+    - Default gateway
+    - Google DNS (`8.8.8.8`)
+    - `www.gexos.org`
+  - Helps quickly identify whether the issue is local, DNS-related, or an overall connectivity problem.
 
 ---
 
-## Screenshots
+### System & Hardware Information
 
-### Main Window
-
-![System Information Dashboard – Main Window](screenshots/system-info-dashboard-main.png)
-
-### HTML Report Example
-
-![System Information Dashboard – HTML Report](screenshots/system-info-dashboard-report.png)
-
----
-
-## System Requirements
-
-- **OS:** Windows (tested on modern Windows versions)
-- **Installation:** Not required (portable EXE)
-- **Permissions:** Standard user account is usually enough for basic information
+- **System Information** window:
+  - OS caption, version, build number.
+  - Install date and last boot time.
+  - Manufacturer and model.
+  - Total physical RAM.
+  - Physical and logical CPU counts.
+- **Hardware Panel**:
+  - CPU details (name, cores, threads, max clock).
+  - GPU / video controller details (name, VRAM, driver version).
+  - Physical disk details (model, interface type, media type, size).
 
 ---
 
-## Technical details
+### Process Monitor
 
-- **Language:** Written in **AutoIt**.
-- **Build:** Compiled as a single **portable `.exe`** (no external DLLs or runtime installers required).
-- **Installation footprint:**  
-  - Does **not** require an installer.  
-  - Does **not** modify system files.  
-  - Does **not** add services or scheduled tasks.
-- **Registry usage:**  
-  - Does **not** rely on permanent registry entries for normal operation.  
-  - No configuration is required in the registry.
-- **Config & logs (if enabled):**  
-  - Any configuration or log files (e.g. reports) are stored in the same folder as the executable or in a user-selected location.
-- **Data access:**  
-  - Uses standard Windows APIs/WMI/Performance counters to read system information.  
-  - Read-only access – it **only reads** system metrics, it does not change system settings.
-- **Portability:**  
-  - Can be run from a local disk, external drive, or USB stick.  
-  - Suitable for inclusion in a technician’s portable tools kit.
+- Dedicated **Process Monitor** window:
+  - Shows process **Name** and **PID**.
+- Filter bar:
+  - Filter by process name (e.g. `chrome`, `notepad`, `steam`).
+- Context menu actions:
+  - **Refresh**
+  - **Kill Process** (standard `ProcessClose`).
+  - **Force Kill** (`taskkill /F`).
+  - **End Process Tree** (`taskkill /T /F`).
+- Export options:
+  - Export the process list to **TXT** or **CSV**.
+- UX details:
+  - Hover tooltip showing `ProcessName (PID 1234)` over each row.
+  - Option to show/hide system processes (PID 0 and 4) via Settings.
+
+> ⚠️ Killing processes can cause system instability or data loss. Use these features carefully.
 
 ---
 
-## License
+### Logging & Support
 
-This project is licensed under the **MIT License** – you’re free to use, modify and distribute it, as long as the license file is included.
+- Log file stored at:
 
-See the [`LICENSE`](LICENSE) file for details.
+  ```text
+  %TEMP%\SystemInfoDashboard\SystemInfoDashboard.log
+  
+Built-in View Log window for quick inspection.
+
+Support Bundle Export:
+
+Creates a folder on your Desktop with:
+
+System report (TXT)
+
+JSON snapshot
+
+Network details
+
+Application log
+
+This makes it easy to share diagnostic information when troubleshooting issues.
+
+### Quality-of-Life Features
+
+Tray icon + minimize to tray:
+
+The main window can be hidden to the tray and restored from there.
+
+Settings window:
+
+Refresh interval (milliseconds).
+
+Show/hide system processes in the Process Monitor.
+
+Start minimized to tray.
+
+Run at Windows startup (via HKCU Run key).
+
+Export options:
+
+Text report (TXT)
+
+HTML report
+
+JSON system snapshot
+
+Performance history CSV (CPU% and RAM% over time)
+
+Requirements
+
+Windows 10 or later (32-bit or 64-bit).
+
+WMI enabled and functioning.
+
+To build from source:
+
+AutoIt
+
+Optional (recommended for temperature readings):
+
+LibreHardwareMonitor
+Used as a sensor backend for CPU temperature via WMI.
+
+### Downloads
+Source code
+GitHub: https://github.com/Gexos/System-Info-Dashboard
+
+Windows binary (.exe)
+
+GitHub Releases: https://github.com/Gexos/System-Info-Dashboard/releases
+
+Or direct download from: https://gexsoft.org/systeminfodashboard.html
+
+### Installation
+
+The application is portable:
+
+It does not require installation.
+
+It does not modify your system, except:
+
+An optional autostart key under
+HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+(only if you enable “Run at startup” in Settings).
+
+A small .ini configuration file in the same folder as the EXE.
+
+A log file under %TEMP%\SystemInfoDashboard\.
+
+
+### Temperatures & LibreHardwareMonitor Integration
+
+System Info Dashboard tries to read CPU temperature in the following order:
+
+LibreHardwareMonitor (WMI namespace root\LibreHardwareMonitor, Sensor class)
+
+OpenHardwareMonitor (WMI namespace root\OpenHardwareMonitor, Sensor class)
+
+ACPI fallback (via MSAcpi_ThermalZoneTemperature), if available
+
+If none of these sources are accessible or supported by your hardware/BIOS, CPU temperature will be displayed as N/A.
+
+How to enable LibreHardwareMonitor
+
+Download the latest LibreHardwareMonitor portable ZIP from its official GitHub repository.
+
+Extract LibreHardwareMonitor.exe into the same folder as SystemInfoDashboard.exe.
+
+Start System Info Dashboard.
+
+When the app needs temperature values:
+
+It checks whether LibreHardwareMonitor.exe is running.
+
+If not, it tries to start it (minimized) from the same folder.
+
+Once LibreHardwareMonitor is running and its WMI provider is active:
+
+The app queries root\LibreHardwareMonitor for Sensor instances with SensorType = 'Temperature'.
+
+It looks for sensors whose Name contains "CPU" (e.g. CPU Package, CPU Core #1).
+
+The first valid temperature value is used as the CPU temperature.
+
+Some systems (especially certain laptops or OEM configurations) do not expose CPU temperature sensors to WMI at all. In those cases, CPU temperature will remain N/A regardless of LibreHardwareMonitor.
+
+### Security & Verification
+
+System Info Dashboard is intended to be transparent and safe, especially for users who care about what runs on their machine.
+
+What the app does not do
+
+No telemetry:
+It does not send any data to remote servers or third-party services.
+
+No hidden installation:
+It does not install services, drivers, or hidden background components.
+
+No unsolicited registry changes:
+It only writes:
+An optional startup entry in HKCU\Software\Microsoft\Windows\CurrentVersion\Run (if enabled in Settings).
+
+A configuration .ini file next to the EXE.
+
+A log file under %TEMP%\SystemInfoDashboard\.
+
+All other access is read-only via Windows APIs and WMI.
