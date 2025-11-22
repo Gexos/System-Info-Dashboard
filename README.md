@@ -81,3 +81,118 @@ Downloads
 You can find the latest release here:
 
 👉 Download System Information Dashboard
+
+Just download the .zip, extract it, and run:
+
+SystemInformationDashboard.exe
+
+Optional (for temperatures and sensors):
+
+Place LibreHardwareMonitor.exe in the same folder if you want one-click access to full hardware sensor details.
+
+Usage
+
+Run the EXE
+
+Double-click SystemInformationDashboard.exe.
+No installation, no UAC wizard, nothing fancy.
+
+Read the essentials
+
+The main window shows:
+
+CPU usage
+
+RAM usage
+
+Disk usage
+
+OS information
+
+System uptime
+
+Export a report (if available in your version)
+
+Use the menu option to export a simple system report.
+You can save it to a file and attach it to a support ticket, email, or your own notes.
+
+Open LibreHardwareMonitor (optional)
+
+If LibreHardwareMonitor.exe is in the same folder:
+
+Open the Tools menu
+
+Click “Open LibreHardwareMonitor (temperatures & sensors)”
+
+That launches LibreHardwareMonitor for detailed temps and hardware sensors.
+
+LibreHardwareMonitor Integration
+
+System Information Dashboard focuses on being lightweight and fast.
+Instead of reinventing full sensor monitoring, it works alongside LibreHardwareMonitor:
+
+SID: quick overview (CPU, RAM, disk, OS, uptime)
+
+LibreHardwareMonitor: deep-dive sensors (temps, fans, voltages, etc.)
+
+How it works in practice:
+
+You download LibreHardwareMonitor separately
+
+Place LibreHardwareMonitor.exe next to SystemInformationDashboard.exe
+
+Use the Tools menu in SID to launch it when you need more detail
+
+If LibreHardwareMonitor isn’t present, SID still works normally—only the menu entry will show a warning instead of launching it.
+
+Requirements
+
+OS: Windows (tested on modern versions of Windows 10/11)
+
+Architecture: x64 recommended
+
+Permissions: Standard user is usually enough
+
+Optional: LibreHardwareMonitor for advanced temperature and sensor details
+
+Security Notes
+
+No installer, no drivers, no kernel tricks
+
+No telemetry, no analytics, no background services
+
+All data is gathered locally using standard Windows APIs
+
+Roadmap / Ideas
+
+Planned / possible future improvements:
+
+Slightly richer reports
+
+Extra basic health checks (e.g. simple security/firewall indicators)
+
+Minor UI tweaks and polish
+
+Feedback from real use is what drives changes, so if you have ideas, open an issue.
+
+Contributing
+
+If you:
+
+Found a bug
+
+Have a suggestion
+
+Want to help clean up or improve the code
+
+…feel free to open an Issue or a Pull Request.
+
+License
+
+(Choose what you want here, for example:)
+
+This project is licensed under the MIT License – see the LICENSE file for details.
+
+Contact
+
+If you’re using System Information Dashboard in your daily work and have feedback, feel free to open an issue on GitHub or reach out through the project page.
