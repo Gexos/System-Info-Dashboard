@@ -24,13 +24,18 @@
 </p>
 
 ---
-
 # System Information Dashboard
 
-System Information Dashboard is a lightweight, portable Windows utility that shows you the essentials at a glance:  
-**CPU load, RAM usage, disk usage, OS details, and system uptime** in a clean, single window.
+**System Information Dashboard (SID)** is a lightweight, portable Windows utility that shows you the essentials at a glance:
 
-It’s built for technicians and power users who want quick diagnostics without the bloat of full monitoring suites.
+- CPU load  
+- RAM usage  
+- Disk usage  
+- OS details  
+- System uptime  
+
+It’s built for technicians and power users who want quick diagnostics without the bloat of full monitoring suites.  
+For advanced temperatures and sensors, SID can open **LibreHardwareMonitor** directly from the Tools menu.
 
 ---
 
@@ -42,157 +47,170 @@ It’s built for technicians and power users who want quick diagnostics without 
 
 - **Memory usage**
   - Used vs available RAM
-  - Ideal for quick “is this RAM-starved?” checks
+  - Great for quick “is this RAM-starved?” checks
 
 - **Disk usage**
   - Usage percentage of the main drive
-  - Helps spot systems running dangerously low on space
+  - Helps spot systems running low on storage
 
 - **OS & system info**
   - Windows version, build, architecture
   - System uptime (how long the machine has been running)
 
-- **Portable by design**
-  - Single `.exe` – no installer
-  - No services, no scheduled tasks, no junk left behind
+- **Portable**
+  - Single `.exe`  
+  - No installer, no services, no scheduled tasks
 
 - **Technician-friendly**
-  - Perfect for USB sticks and on-site work
-  - Simple enough for non-technical users to run and read back basic numbers
+  - Ideal for USB sticks and on-site work
+  - Simple enough for non-technical users to run and read basic values
 
 - **LibreHardwareMonitor integration**
-  - Menu entry to open **LibreHardwareMonitor** for advanced temperatures and sensor data  
-    (CPU/GPU temps, fan speeds, voltages, etc.)
+  - Menu entry to open **LibreHardwareMonitor** for advanced hardware sensors:
+    - CPU / GPU temperatures  
+    - HDD / SSD / NVMe temps  
+    - Fans, voltages, and more (depending on hardware)
 
 ---
 
 ## Screenshots
 
-*(Add your screenshots here once you have them, for example:)*
+_Add screenshots here when available, for example:_
 
 - Main dashboard view  
-- Tools menu with “Open LibreHardwareMonitor” entry  
+- Tools menu with “Open LibreHardwareMonitor (temperatures & sensors)”  
 
 ```text
 [ screenshot placeholder ]
+```
 
-Downloads
+---
 
-You can find the latest release here:
+## Downloads
 
-👉 Download System Information Dashboard
+Get the latest release from GitHub Releases:
 
-Just download the .zip, extract it, and run:
+- 👉 **[Download System Information Dashboard](https://github.com/your-user/your-repo/releases)**  
+  _(Replace this link with your actual repository URL.)_
 
-SystemInformationDashboard.exe
+Steps:
 
-Optional (for temperatures and sensors):
+1. Download the latest `.zip` from the Releases page.
+2. Extract it to a folder of your choice.
+3. Run `SystemInformationDashboard.exe`.
 
-Place LibreHardwareMonitor.exe in the same folder if you want one-click access to full hardware sensor details.
+Optional (for advanced temperatures and sensors):
 
-Usage
+- Download **LibreHardwareMonitor** from its official project page.
+- Place `LibreHardwareMonitor.exe` in the **same folder** as `SystemInformationDashboard.exe`.
 
-Run the EXE
+---
 
-Double-click SystemInformationDashboard.exe.
-No installation, no UAC wizard, nothing fancy.
+## Usage
 
-Read the essentials
+1. **Run the app**
 
-The main window shows:
+   Double-click `SystemInformationDashboard.exe`.  
+   No installation required.
 
-CPU usage
+2. **View system overview**
 
-RAM usage
+   The main window shows:
 
-Disk usage
+   - CPU usage  
+   - RAM usage  
+   - Disk usage  
+   - OS details  
+   - System uptime  
 
-OS information
+3. **Export a report** (if available in your version)
 
-System uptime
+   Use the menu option to export a simple system report.  
+   You can save it and attach it to emails, tickets, or your documentation.
 
-Export a report (if available in your version)
+4. **Open LibreHardwareMonitor (optional)**
 
-Use the menu option to export a simple system report.
-You can save it to a file and attach it to a support ticket, email, or your own notes.
+   If `LibreHardwareMonitor.exe` is in the same folder:
 
-Open LibreHardwareMonitor (optional)
+   - Go to the **Tools** menu  
+   - Click **“Open LibreHardwareMonitor (temperatures & sensors)”**
 
-If LibreHardwareMonitor.exe is in the same folder:
+   This launches LibreHardwareMonitor for full sensor details:
+   CPU/GPU temps, drive temps, fan speeds, voltages, etc.
 
-Open the Tools menu
+---
 
-Click “Open LibreHardwareMonitor (temperatures & sensors)”
+## LibreHardwareMonitor Integration
 
-That launches LibreHardwareMonitor for detailed temps and hardware sensors.
+System Information Dashboard focuses on being small and fast.  
+Instead of re-implementing full hardware sensor support, it works together with **LibreHardwareMonitor**:
 
-LibreHardwareMonitor Integration
+- **SID:** quick overview (CPU, RAM, disk, OS, uptime)  
+- **LibreHardwareMonitor:** detailed sensors (temps, fans, voltages, more)
 
-System Information Dashboard focuses on being lightweight and fast.
-Instead of reinventing full sensor monitoring, it works alongside LibreHardwareMonitor:
+**How it works:**
 
-SID: quick overview (CPU, RAM, disk, OS, uptime)
+1. You download LibreHardwareMonitor separately.  
+2. Place `LibreHardwareMonitor.exe` next to `SystemInformationDashboard.exe`.  
+3. Use the Tools menu in SID to open it with a single click.
 
-LibreHardwareMonitor: deep-dive sensors (temps, fans, voltages, etc.)
+If LibreHardwareMonitor isn’t present, SID still works normally. Only the “Open LibreHardwareMonitor” action will show a warning instead of launching it.
 
-How it works in practice:
+---
 
-You download LibreHardwareMonitor separately
+## Requirements
 
-Place LibreHardwareMonitor.exe next to SystemInformationDashboard.exe
+- **OS:** Windows (tested on modern Windows 10/11)  
+- **Architecture:** x64 recommended  
+- **Permissions:** Standard user is usually enough  
+- **Optional:** LibreHardwareMonitor for advanced sensor details
 
-Use the Tools menu in SID to launch it when you need more detail
+---
 
-If LibreHardwareMonitor isn’t present, SID still works normally—only the menu entry will show a warning instead of launching it.
+## Security Notes
 
-Requirements
+- No installer, no drivers, no kernel tricks  
+- No telemetry, no analytics, no background services  
+- System information is collected using standard Windows APIs  
+- Everything runs locally on your machine
 
-OS: Windows (tested on modern versions of Windows 10/11)
+---
 
-Architecture: x64 recommended
+## Roadmap / Planned Ideas
 
-Permissions: Standard user is usually enough
+Some planned / possible improvements:
 
-Optional: LibreHardwareMonitor for advanced temperature and sensor details
+- Slightly richer report exports  
+- Additional basic health checks (e.g. simple security/firewall indicators)  
+- Minor UI polish and quality-of-life tweaks
 
-Security Notes
+If you have suggestions or feature requests, feel free to open an issue.
 
-No installer, no drivers, no kernel tricks
+---
 
-No telemetry, no analytics, no background services
+## Contributing
 
-All data is gathered locally using standard Windows APIs
+Contributions and feedback are welcome.
 
-Roadmap / Ideas
+You can:
 
-Planned / possible future improvements:
+- Open an **Issue** for bugs or feature requests  
+- Open a **Pull Request** with code improvements or fixes  
 
-Slightly richer reports
+Please keep changes focused and documented in the PR description.
 
-Extra basic health checks (e.g. simple security/firewall indicators)
+---
 
-Minor UI tweaks and polish
+## License
 
-Feedback from real use is what drives changes, so if you have ideas, open an issue.
+This project is licensed under the **MIT License**.  
+See the [`LICENSE`](LICENSE) file for details.
 
-Contributing
+---
 
-If you:
+## Contact
 
-Found a bug
+If you use System Information Dashboard and have feedback, ideas, or issues:
 
-Have a suggestion
-
-Want to help clean up or improve the code
-
-…feel free to open an Issue or a Pull Request.
-
-License
-
-(Choose what you want here, for example:)
-
-This project is licensed under the MIT License – see the LICENSE file for details.
-
-Contact
-
-If you’re using System Information Dashboard in your daily work and have feedback, feel free to open an issue on GitHub or reach out through the project page.
+- Open an issue on GitHub in this repository  
+- Or reach out via the project’s homepage / contact info linked in the repo description
