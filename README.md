@@ -1,29 +1,4 @@
-<p align="center">
-  <!-- Adjust the path if needed -->
-  <img src="assets/systeminfo-logo.png" alt="System Info Dashboard logo" width="96">
-</p>
 
-<h1 align="center">System Info Dashboard</h1>
-
-<p align="center">
-  <strong>Lightweight system monitoring tool for Windows (CPU / RAM / Disks / Network / Processes)</strong>
-</p>
-
-<p align="center">
-  <a href="https://github.com/Gexos/System-Info-Dashboard/releases">
-    <img src="https://img.shields.io/github/v/release/Gexos/System-Info-Dashboard?style=for-the-badge" alt="Latest release">
-  </a>
-  <a href="https://github.com/Gexos/System-Info-Dashboard/releases">
-    <img src="https://img.shields.io/github/downloads/Gexos/System-Info-Dashboard/total?style=for-the-badge" alt="Downloads">
-  </a>
-  <img src="https://img.shields.io/badge/platform-Windows-0078D6?style=for-the-badge&logo=windows" alt="Windows">
-  <img src="https://img.shields.io/badge/language-AutoIt-1f425f?style=for-the-badge" alt="AutoIt">
-  <a href="LICENSE">
-    <img src="https://img.shields.io/github/license/Gexos/System-Info-Dashboard?style=for-the-badge" alt="License">
-  </a>
-</p>
-
----
 # System Info Dashboard
 
 ![AutoIt](https://img.shields.io/badge/built%20with-AutoIt-1abc9c)
