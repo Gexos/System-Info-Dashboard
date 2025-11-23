@@ -24,193 +24,160 @@
 </p>
 
 ---
-# System Information Dashboard
+# System Info Dashboard
 
-**System Information Dashboard (SID)** is a lightweight, portable Windows utility that shows you the essentials at a glance:
+![AutoIt](https://img.shields.io/badge/built%20with-AutoIt-1abc9c)
+![Platform](https://img.shields.io/badge/platform-Windows-blue)
+![Version](https://img.shields.io/badge/version-5.0.0-orange)
 
-- CPU load  
-- RAM usage  
-- Disk usage  
-- OS details  
-- System uptime  
-
-It’s built for technicians and power users who want quick diagnostics without the bloat of full monitoring suites.  
-For advanced temperatures and sensors, SID can open **LibreHardwareMonitor** directly from the Tools menu.
+**System Info Dashboard** is a lightweight system utility for Windows, written in AutoIt, that brings key system information into a clean, technician‑friendly dashboard.
 
 ---
 
 ## Features
 
-- **CPU overview**
-  - Current CPU usage
-  - Basic processor information
+- **Main Dashboard**
+  - CPU usage
+  - RAM usage (MB + %)
+  - Disk usage for all fixed drives
+  - OS version & architecture
+  - System uptime
+  - Current time
+  - Network summary (hostname + IP)
+  - Security summary: Antivirus, Firewall, Windows Update status
+  - Optional: CPU / Disk temperatures via LibreHardwareMonitor
 
-- **Memory usage**
-  - Used vs available RAM
-  - Great for quick “is this RAM-starved?” checks
+- **Process Monitor**
+  - List of running processes with:
+    - Name, PID, Memory (MB)
+  - Filter by name
+  - Kill selected process (with warning about possible instability)
 
-- **Disk usage**
-  - Usage percentage of the main drive
-  - Helps spot systems running low on storage
+- **Network Details**
+  - Detailed information for IP‑enabled adapters (WMI):
+    - Description, MAC, IP, subnet, gateway, DNS
 
-- **OS & system info**
-  - Windows version, build, architecture
-  - System uptime (how long the machine has been running)
+- **System Information**
+  - OS info (caption, version, build, install date, last boot)
+  - Computer system info (manufacturer, model, total RAM, logical/physical processors)
 
-- **Portable**
-  - Single `.exe`  
-  - No installer, no services, no scheduled tasks
-
-- **Technician-friendly**
-  - Ideal for USB sticks and on-site work
-  - Simple enough for non-technical users to run and read basic values
-
-- **LibreHardwareMonitor integration**
-  - Menu entry to open **LibreHardwareMonitor** for advanced hardware sensors:
-    - CPU / GPU temperatures  
-    - HDD / SSD / NVMe temps  
-    - Fans, voltages, and more (depending on hardware)
+- **Extra Tools**
+  - Tray icon & minimize to tray
+  - Dark theme toggle
+  - Export system report to **TXT** or **HTML**
+  - Windows Tools menu:
+    - Task Manager
+    - Device Manager
+    - Event Viewer
+    - Services
+    - Disk Management
+    - System Information (msinfo32)
+    - Command Prompt
 
 ---
 
-## Screenshots
+## Download & Requirements
 
-_Add screenshots here when available, for example:_
+- **Platform:** Windows 10/11 (x64 recommended)
+- **Dependencies:** none for basic functionality  
+- Optional temperature support:
+  - [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) next to the EXE
 
-- Main dashboard view  
-- Tools menu with “Open LibreHardwareMonitor (temperatures & sensors)”  
+> For portable use, simply extract the ZIP to a folder and run `System Info Dashboard.exe`.
+> No installer is required and no registry changes are made by default.
+
+---
+
+## LibreHardwareMonitor integration (temperatures)
+
+System Info Dashboard can show CPU / Disk temperatures if it finds a file:
 
 ```text
-[ screenshot placeholder ]
+lhm_temps.txt
 ```
 
----
+in the same folder as the EXE, with content like:
 
-## Downloads
+```text
+CPU=45
+DISK=33
+```
 
-Get the latest release from GitHub Releases:
+Basic workflow:
 
-- 👉 **[Download System Information Dashboard](https://github.com/your-user/your-repo/releases)**  
-  _(Replace this link with your actual repository URL.)_
+1. Download **LibreHardwareMonitor**.
+2. Place `LibreHardwareMonitor.exe` in the same folder as `System Info Dashboard.exe`.
+3. Use a small script / log rule in LibreHardwareMonitor to write temperatures to `lhm_temps.txt`.
+4. The main dashboard will read this file and display the values in the **Temperatures** line.
 
-Steps:
-
-1. Download the latest `.zip` from the Releases page.
-2. Extract it to a folder of your choice.
-3. Run `SystemInformationDashboard.exe`.
-
-Optional (for advanced temperatures and sensors):
-
-- Download **LibreHardwareMonitor** from its official project page.
-- Place `LibreHardwareMonitor.exe` in the **same folder** as `SystemInformationDashboard.exe`.
+(A dedicated helper for this may be added in the future.)
 
 ---
 
 ## Usage
 
-1. **Run the app**
+1. Run `System Info Dashboard.exe`.
+2. Check the overall system overview in the **main window**.
+3. From the menu:
+   - **Main → Process Monitor…** to inspect and manage processes.
+   - **Main → Network Details…** for detailed network info (WMI).
+   - **Main → System Information…** for OS & hardware details.
+   - **Main → Export TXT/HTML report** to save a system report.
+   - **Windows Tools** for quick access to native Windows tools.
+   - **Help → Open Help…** opens `HELP.txt`.
+   - **Help → About System Info Dashboard** shows version & links.
 
-   Double-click `SystemInformationDashboard.exe`.  
-   No installation required.
-
-2. **View system overview**
-
-   The main window shows:
-
-   - CPU usage  
-   - RAM usage  
-   - Disk usage  
-   - OS details  
-   - System uptime  
-
-3. **Export a report** (if available in your version)
-
-   Use the menu option to export a simple system report.  
-   You can save it and attach it to emails, tickets, or your documentation.
-
-4. **Open LibreHardwareMonitor (optional)**
-
-   If `LibreHardwareMonitor.exe` is in the same folder:
-
-   - Go to the **Tools** menu  
-   - Click **“Open LibreHardwareMonitor (temperatures & sensors)”**
-
-   This launches LibreHardwareMonitor for full sensor details:
-   CPU/GPU temps, drive temps, fan speeds, voltages, etc.
+The app can hide to the tray when minimized, so it can stay out of the way while you work.
 
 ---
 
-## LibreHardwareMonitor Integration
+## Security & Antivirus notes
 
-System Information Dashboard focuses on being small and fast.  
-Instead of re-implementing full hardware sensor support, it works together with **LibreHardwareMonitor**:
+**System Info Dashboard:**
 
-- **SID:** quick overview (CPU, RAM, disk, OS, uptime)  
-- **LibreHardwareMonitor:** detailed sensors (temps, fans, voltages, more)
+- is written in **AutoIt**,
+- uses WMI and process APIs to read system information,
+- can terminate processes (Process Monitor).
 
-**How it works:**
+Because of these behaviours:
 
-1. You download LibreHardwareMonitor separately.  
-2. Place `LibreHardwareMonitor.exe` next to `SystemInformationDashboard.exe`.  
-3. Use the Tools menu in SID to open it with a single click.
+- Some antivirus engines may flag it as **“suspicious” or “generic”** (false positive).
+- The code is **open source** – you can review it, build your own binary, and compare hashes.
 
-If LibreHardwareMonitor isn’t present, SID still works normally. Only the “Open LibreHardwareMonitor” action will show a warning instead of launching it.
+Recommended:
 
----
-
-## Requirements
-
-- **OS:** Windows (tested on modern Windows 10/11)  
-- **Architecture:** x64 recommended  
-- **Permissions:** Standard user is usually enough  
-- **Optional:** LibreHardwareMonitor for advanced sensor details
+- Verify the hashes of the EXE against the ones published on the website / release page.
+- If your antivirus blocks it, only whitelist it if you trust the source and have verified the binary.
 
 ---
 
-## Security Notes
+## Build from source
 
-- No installer, no drivers, no kernel tricks  
-- No telemetry, no analytics, no background services  
-- System information is collected using standard Windows APIs  
-- Everything runs locally on your machine
+1. Install:
+   - [AutoIt](https://www.autoitscript.com/site/autoit/)
+   - SciTE + AutoIt3Wrapper (usually comes with the AutoIt full install)
+2. Clone or download the repository.
+3. Open `info.au3` in SciTE.
+4. Use `Tools → Build` to create the EXE with:
+   - embedded icon (`sysinfo.ico`)
+   - version info (`5.0.0.0`)
+   - file description: `System Info Dashboard v5.0.0`
 
----
+You can change the version by editing:
 
-## Roadmap / Planned Ideas
+```autoit
+Global Const $APP_VER = "5.0.0"
 
-Some planned / possible improvements:
-
-- Slightly richer report exports  
-- Additional basic health checks (e.g. simple security/firewall indicators)  
-- Minor UI polish and quality-of-life tweaks
-
-If you have suggestions or feature requests, feel free to open an issue.
-
----
-
-## Contributing
-
-Contributions and feedback are welcome.
-
-You can:
-
-- Open an **Issue** for bugs or feature requests  
-- Open a **Pull Request** with code improvements or fixes  
-
-Please keep changes focused and documented in the PR description.
+#AutoIt3Wrapper_Res_Description=System Info Dashboard v5.0.0
+#AutoIt3Wrapper_Res_Fileversion=5.0.0.0
+#AutoIt3Wrapper_Res_ProductVersion=5.0.0.0
+```
 
 ---
 
-## License
+## Author
 
-This project is licensed under the **MIT License**.  
-See the [`LICENSE`](LICENSE) file for details.
-
----
-
-## Contact
-
-If you use System Information Dashboard and have feedback, ideas, or issues:
-
-- Open an issue on GitHub in this repository  
-- Or reach out via the project’s homepage / contact info linked in the repo description
+- **Author:** gexos (Giorgos Xanthopoulos)  
+- **Website:** https://www.gexos.org  
+- **Project page:** https://gexsoft.org/systeminfodashboard.html  
+- **GitHub:** https://github.com/Gexos/System-Info-Dashboard
