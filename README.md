@@ -60,7 +60,7 @@ The app is **portable**: no installer, no default registry changes, and can be r
 
 For portable use:
 
-1. Download the ZIP from GitHub Releases.
+1. Download the ZIP from ![GitHub Releases](https://github.com/Gexos/System-Info-Dashboard/releases).
 2. Extract it to a folder.
 3. Run `System Info Dashboard.exe`.
 
