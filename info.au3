@@ -1,19 +1,13 @@
-#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=sysinfo.ico
-#AutoIt3Wrapper_Outfile=SysInfoDash.exe
-#AutoIt3Wrapper_Outfile_x64=SysInfoDashX64.exe
-#AutoIt3Wrapper_Compile_Both=y
-#AutoIt3Wrapper_UseX64=y
+#AutoIt3Wrapper_Run_Au3Check=n  ; Au3Check off (too many custom things here.)
+
+; ==== VERSION INFO (tooltip + file properties) ====
 #AutoIt3Wrapper_Res_Description=System Info Dashboard v5.0.0
 #AutoIt3Wrapper_Res_Fileversion=5.0.0.0
-#AutoIt3Wrapper_Res_ProductName=System Info Dashboard
 #AutoIt3Wrapper_Res_ProductVersion=5.0.0.0
+#AutoIt3Wrapper_Res_ProductName=System Info Dashboard
 #AutoIt3Wrapper_Res_CompanyName=GexSoft
 #AutoIt3Wrapper_Res_Field=Comments|System Info Dashboard v5.0.0 by gexos
-#AutoIt3Wrapper_Run_AU3Check=n
-#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
-
-; ==== VERSION INFO FOR EXPLORER TOOLTIP ====
 
 #include <GUIConstantsEx.au3>
 #include <WindowsConstants.au3>
@@ -25,12 +19,11 @@
 #include <Date.au3>
 #include <Misc.au3>
 #include <FileConstants.au3>
-#include <Array.au3>
 #include <Constants.au3> ; for $STDOUT_CHILD
 
-; ======================================================================
-;  CONFIG / GLOBALS
-; ======================================================================
+; ==========================
+;  GLOBALS / CONFIG
+; ==========================
 
 Global Const $APP_NAME = "System Info Dashboard"
 Global Const $APP_VER  = "5.0.0"
@@ -43,7 +36,7 @@ Global $g_lblCPU, $g_lblRAM, $g_lblDisk, $g_lblOS, $g_lblUptime, $g_lblTime, _
 Global $g_lvProc, $g_inpProcFilter
 Global $g_txtNetDetails, $g_txtSysInfo
 
-; menu/control IDs (?sa ft??????ta? st?? a???)
+; menu/control IDs
 Global _
     $ID_MAIN_TXT, _
     $ID_MAIN_HTML, _
@@ -67,7 +60,7 @@ Global _
     $ID_WT_CMD, _
     $ID_SET_THEME
 
-; IDs p?? d?µ????????ta? ??G????? (st? About) – ?e?????e -1 ?ste ?a µ?? ta???????? µe msg=0
+; About window clickable labels – set later
 Global $ID_ABOUT_WEB  = -1
 Global $ID_ABOUT_GEXSOFT = -1
 Global $ID_ABOUT_GITHUB  = -1
@@ -75,17 +68,17 @@ Global $ID_ABOUT_GITHUB  = -1
 Global $g_iRefreshMs = 2000
 Global $g_bDarkTheme = True
 
-; tray items
+; tray menu
 Global $g_idTrayShow, $g_idTrayExit
 
-; COM error handler (??a ?a µ?? s??t????? t? app ta COM/WMI errors)
+; COM error handler (so WMI/COM glitches don’t crash the app)
 Global $g_oComError = ObjEvent("AutoIt.Error", "_ComErrHandler")
 
-; ======================================================================
+; ==========================
 ;  MAIN
-; ======================================================================
+; ==========================
 
-Opt("TrayMenuMode", 3) ; manual tray handling
+Opt("TrayMenuMode", 3) ; we handle tray menu manually
 
 _CreateMainGUI()
 _CreateProcessGUI()
@@ -101,14 +94,14 @@ TraySetState()
 
 GUISetState(@SW_SHOW, $g_hMainGUI)
 
-; periodic update of main dashboard
+; update main dashboard every X ms
 AdlibRegister("_UpdateMainDashboard", $g_iRefreshMs)
 
 While 1
     Local $msg  = GUIGetMsg()
     Local $tmsg = TrayGetMsg()
 
-    ; ----------------- TRAY EVENTS -----------------
+    ; --- tray events ---
     If $tmsg <> 0 Then
         Switch $tmsg
             Case $g_idTrayShow
@@ -119,10 +112,10 @@ While 1
         EndSwitch
     EndIf
 
-    ; ----------------- GUI EVENTS ------------------
+    ; --- GUI events ---
     Switch $msg
         Case $GUI_EVENT_CLOSE
-            ; main window -> hide to tray
+            ; if main is active ? hide to tray
             If WinActive($g_hMainGUI) Then
                 GUISetState(@SW_HIDE, $g_hMainGUI)
             ElseIf WinActive($g_hProcGUI) Then
@@ -136,11 +129,12 @@ While 1
             EndIf
 
         Case $GUI_EVENT_MINIMIZE
+            ; minimize main ? send to tray
             If WinActive($g_hMainGUI) Then
                 GUISetState(@SW_HIDE, $g_hMainGUI)
             EndIf
 
-        ; -------- MAIN MENU --------
+        ; --- MAIN MENU ---
         Case $ID_MAIN_TXT
             _ExportReport("txt")
 
@@ -165,40 +159,34 @@ While 1
         Case $ID_MAIN_EXIT
             Exit
 
-        ; -------- SETTINGS MENU --------
+        ; --- SETTINGS ---
         Case $ID_SET_THEME
             _ToggleTheme()
 
-        ; -------- WINDOWS TOOLS MENU --------
+        ; --- WINDOWS TOOLS ---
         Case $ID_WT_TASKMGR
             ShellExecute("taskmgr.exe")
-
         Case $ID_WT_DEVMGR
             ShellExecute("devmgmt.msc")
-
         Case $ID_WT_EVENTVWR
             ShellExecute("eventvwr.msc")
-
         Case $ID_WT_SERVICES
             ShellExecute("services.msc")
-
         Case $ID_WT_DISKMGMT
             ShellExecute("diskmgmt.msc")
-
         Case $ID_WT_MSINFO
             ShellExecute("msinfo32.exe")
-
         Case $ID_WT_CMD
             ShellExecute(@ComSpec)
 
-        ; -------- HELP MENU --------
+        ; --- HELP MENU ---
         Case $ID_HELP_OPENHELP
             _OpenHelpFile()
 
         Case $ID_HELP_ABOUT
             _ShowAbout()
 
-        ; -------- ABOUT LINKS (µ??? af?? d?µ??????????) --------
+        ; --- ABOUT LINKS ---
         Case $ID_ABOUT_WEB
             If $ID_ABOUT_WEB > 0 Then ShellExecute("https://www.gexos.org")
 
@@ -208,47 +196,45 @@ While 1
         Case $ID_ABOUT_GITHUB
             If $ID_ABOUT_GITHUB > 0 Then ShellExecute("https://github.com/Gexos/System-Info-Dashboard")
 
-        ; -------- PROCESS WINDOW --------
+        ; --- PROCESS WINDOW ---
         Case $ID_PROC_REFRESH
             _UpdateProcessList()
-
         Case $ID_PROC_KILL
             _KillSelectedProcess()
 
-        ; -------- NETWORK WINDOW --------
+        ; --- NETWORK WINDOW ---
         Case $ID_NET_REFRESH
             _UpdateNetworkDetails()
 
-        ; -------- SYSTEM WINDOW --------
+        ; --- SYSTEM WINDOW ---
         Case $ID_SYS_REFRESH
             _UpdateSystemInfo()
     EndSwitch
 WEnd
 
-; ======================================================================
+; ==========================
 ;  COM ERROR HANDLER
-; ======================================================================
+; ==========================
 
 Func _ComErrHandler($oError)
-    ; a?????µe t? COM error ??a ?a µ?? ??e??e? t? app
-    ; ConsoleWrite("COM error: " & $oError.windescription & @CRLF)
+    ; Just swallow COM errors so WMI weirdness doesn’t kill the app
     Return 0
 EndFunc
 
-; ======================================================================
+; ==========================
 ;  GUI CREATION
-; ======================================================================
+; ==========================
 
 Func _CreateMainGUI()
     $g_hMainGUI = GUICreate($APP_NAME, 720, 440, -1, -1, BitOR($WS_CAPTION, $WS_SYSMENU, $WS_MINIMIZEBOX))
-    GUISetBkColor(0x001F4F, $g_hMainGUI) ; dark blue
-    GUISetFont(10, 700, 0, "Segoe UI", $g_hMainGUI) ; bigger + bold base font
+    GUISetBkColor(0x001F4F, $g_hMainGUI) ; dark blue background
+    GUISetFont(10, 700, 0, "Segoe UI", $g_hMainGUI)
 
-    ; GexSoft orange top bar
+    ; tiny orange bar on top for GexSoft style
     Local $bar = GUICtrlCreateLabel("", 0, 0, 720, 4)
     GUICtrlSetBkColor($bar, $GEXSOFT_ORANGE)
 
-    ; Menus  (Help last)
+    ; Menus (Help is last)
     Local $mMain = GUICtrlCreateMenu("&Main")
     $ID_MAIN_TXT   = GUICtrlCreateMenuItem("Export &TXT report", $mMain)
     $ID_MAIN_HTML  = GUICtrlCreateMenuItem("Export &HTML report", $mMain)
@@ -277,25 +263,23 @@ Func _CreateMainGUI()
     GUICtrlCreateMenuItem("", $mHelp)
     $ID_HELP_ABOUT = GUICtrlCreateMenuItem("&About System Info Dashboard", $mHelp)
 
-    ; Title
+    ; title
     Local $lblTitle = GUICtrlCreateLabel($APP_NAME, 20, 15, 400, 24)
-    GUICtrlSetFont($lblTitle, 14, 700, 0, "Segoe UI") ; bigger + bold
+    GUICtrlSetFont($lblTitle, 14, 700, 0, "Segoe UI")
     GUICtrlSetColor($lblTitle, 0xFFFFFF)
 
-    ; "System Overview" label (?e???)
+    ; section title
     Local $lblSysOverview = GUICtrlCreateLabel("System Overview", 20, 45, 300, 20)
     GUICtrlSetFont($lblSysOverview, 11, 700, 0, "Segoe UI")
     GUICtrlSetColor($lblSysOverview, 0xFFFFFF)
 
-    ; Orange outline ???? ap? t? main panel
+    ; orange border around main info area
     Local $gfxBorder = GUICtrlCreateGraphic(15, 60, 690, 300)
     GUICtrlSetGraphic($gfxBorder, $GUI_GR_COLOR, $GEXSOFT_ORANGE)
     GUICtrlSetGraphic($gfxBorder, $GUI_GR_PENSIZE, 1)
     GUICtrlSetGraphic($gfxBorder, $GUI_GR_RECT, 0, 0, 690, 300)
 
-    ; Rows: CPU, RAM, Disk, OS, Uptime, Time, Network, Security, Temps
-    ; y = 75, 100, 125, 150, 175, 200, 225, 250, 275
-
+    ; labels
     Local $lblCPUtxt  = GUICtrlCreateLabel("CPU Usage:",       30,  75, 120, 22)
     Local $lblRAMtxt  = GUICtrlCreateLabel("RAM Usage:",       30, 100, 120, 22)
     Local $lblDisktxt = GUICtrlCreateLabel("Disk Usage:",      30, 125, 120, 22)
@@ -336,7 +320,7 @@ Func _CreateMainGUI()
     GUICtrlSetColor($g_lblSec,   0xFFFFFF)
     GUICtrlSetColor($g_lblTemps, 0xFFFFFF)
 
-    ; version bottom-left
+    ; version text at bottom left
     $g_lblVersion = GUICtrlCreateLabel("GexSoft – " & $APP_NAME & " v" & $APP_VER & " (by gexos)", 20, 380, 600, 22)
     GUICtrlSetColor($g_lblVersion, 0xFFFFFF)
 EndFunc
@@ -347,7 +331,6 @@ Func _CreateProcessGUI()
     GUISetBkColor(0x001F4F, $g_hProcGUI)
     GUISetFont(10, 700, 0, "Segoe UI", $g_hProcGUI)
 
-    ; GexSoft orange top bar
     Local $bar = GUICtrlCreateLabel("", 0, 0, 760, 4)
     GUICtrlSetBkColor($bar, $GEXSOFT_ORANGE)
 
@@ -359,7 +342,6 @@ Func _CreateProcessGUI()
     GUICtrlSetColor($lblFilter, 0xFFFFFF)
 
     $g_inpProcFilter = GUICtrlCreateInput("", 75, 48, 250, 24)
-
     $ID_PROC_REFRESH = GUICtrlCreateButton("Refresh", 340, 45, 90, 28, $BS_FLAT)
     $ID_PROC_KILL    = GUICtrlCreateButton("Kill selected", 440, 45, 110, 28, $BS_FLAT)
 
@@ -388,7 +370,6 @@ Func _CreateNetworkGUI()
     GUISetBkColor(0x001F4F, $g_hNetGUI)
     GUISetFont(10, 700, 0, "Segoe UI", $g_hNetGUI)
 
-    ; GexSoft orange top bar
     Local $bar = GUICtrlCreateLabel("", 0, 0, 700, 4)
     GUICtrlSetBkColor($bar, $GEXSOFT_ORANGE)
 
@@ -416,7 +397,6 @@ Func _CreateSystemGUI()
     GUISetBkColor(0x001F4F, $g_hSysGUI)
     GUISetFont(10, 700, 0, "Segoe UI", $g_hSysGUI)
 
-    ; GexSoft orange top bar
     Local $bar = GUICtrlCreateLabel("", 0, 0, 700, 4)
     GUICtrlSetBkColor($bar, $GEXSOFT_ORANGE)
 
@@ -445,11 +425,9 @@ Func _ShowAbout()
         GUISetBkColor(0x001F4F, $g_hAboutGUI)
         GUISetFont(10, 700, 0, "Segoe UI", $g_hAboutGUI)
 
-        ; GexSoft orange top bar
         Local $bar = GUICtrlCreateLabel("", 0, 0, 480, 4)
         GUICtrlSetBkColor($bar, $GEXSOFT_ORANGE)
 
-        ; Optional logo
         If FileExists("logo.png") Then
             GUICtrlCreatePic("logo.png", 380, 20, 64, 64)
         EndIf
@@ -464,19 +442,16 @@ Func _ShowAbout()
         GUICtrlSetColor($lblAuthor, 0xFFFFFF)
         $y += 20
 
-        ; Website (clickable)
         $ID_ABOUT_WEB = GUICtrlCreateLabel("Website: https://www.gexos.org", 20, $y, 420, 20)
         GUICtrlSetColor($ID_ABOUT_WEB, $GEXSOFT_ORANGE)
         GUICtrlSetCursor($ID_ABOUT_WEB, 4)
         $y += 20
 
-        ; GexSoft page (clickable)
-        $ID_ABOUT_GEXSOFT = GUICtrlCreateLabel("GexSoft: https://gexsoft.org/systeminfodashboard.html", 20, $y, 440, 20)
+        $ID_ABOUT_GEXSOFT = GUICtrlCreateLabel("GexSoft page: https://gexsoft.org/systeminfodashboard.html", 20, $y, 440, 20)
         GUICtrlSetColor($ID_ABOUT_GEXSOFT, $GEXSOFT_ORANGE)
         GUICtrlSetCursor($ID_ABOUT_GEXSOFT, 4)
         $y += 20
 
-        ; GitHub (clickable)
         $ID_ABOUT_GITHUB = GUICtrlCreateLabel("GitHub: https://github.com/Gexos/System-Info-Dashboard", 20, $y, 440, 20)
         GUICtrlSetColor($ID_ABOUT_GITHUB, $GEXSOFT_ORANGE)
         GUICtrlSetCursor($ID_ABOUT_GITHUB, 4)
@@ -485,7 +460,7 @@ Func _ShowAbout()
         Local $sTxt = _
             "Open source system dashboard for Windows." & @CRLF & _
             "You can review the code, build your own binary," & @CRLF & _
-            "and verify hashes for security."
+            "and verify hashes for extra peace of mind."
 
         Local $lblBody = GUICtrlCreateLabel($sTxt, 20, $y, 440, 80)
         GUICtrlSetColor($lblBody, 0xFFFFFF)
@@ -494,17 +469,17 @@ Func _ShowAbout()
     GUISetState(@SW_SHOW, $g_hAboutGUI)
 EndFunc
 
-; ======================================================================
+; ==========================
 ;  THEME TOGGLE
-; ======================================================================
+; ==========================
 
 Func _ToggleTheme()
     $g_bDarkTheme = Not $g_bDarkTheme
     Local $col
     If $g_bDarkTheme Then
-        $col = 0x001F4F ; dark blue
+        $col = 0x001F4F
     Else
-        $col = 0x202020 ; dark grey
+        $col = 0x202020
     EndIf
 
     If IsHWnd($g_hMainGUI) Then GUISetBkColor($col, $g_hMainGUI)
@@ -514,9 +489,9 @@ Func _ToggleTheme()
     If IsHWnd($g_hAboutGUI) Then GUISetBkColor($col, $g_hAboutGUI)
 EndFunc
 
-; ======================================================================
+; ==========================
 ;  MAIN DASHBOARD UPDATE
-; ======================================================================
+; ==========================
 
 Func _UpdateMainDashboard()
     Local $sCPU   = _GetCPUUsage()
@@ -538,13 +513,12 @@ Func _UpdateMainDashboard()
     GUICtrlSetData($g_lblTemps,  $sTemp)
 EndFunc
 
-; ======================================================================
+; ==========================
 ;  PROCESS MONITOR
-; ======================================================================
+; ==========================
 
 Func _UpdateProcessList()
     Local $sFilter = StringLower(StringStripWS(GUICtrlRead($g_inpProcFilter), 3))
-
     Local $hLV = GUICtrlGetHandle($g_lvProc)
     _GUICtrlListView_DeleteAllItems($hLV)
 
@@ -555,7 +529,6 @@ Func _UpdateProcessList()
         Local $name = $aList[$i][0]
         Local $pid  = $aList[$i][1]
 
-        ; basic filter by name
         If $sFilter <> "" Then
             If Not StringInStr(StringLower($name), $sFilter) Then ContinueLoop
         EndIf
@@ -563,7 +536,7 @@ Func _UpdateProcessList()
         Local $memMB = "-"
         Local $aStats = ProcessGetStats($pid)
         If IsArray($aStats) Then
-            Local $memKB = $aStats[0] ; working set in KB
+            Local $memKB = $aStats[0]
             $memMB = Int($memKB / 1024)
         EndIf
 
@@ -597,25 +570,23 @@ Func _KillSelectedProcess()
 
     If $iAns <> 1 Then Return
 
-    ; try normal kill first
+    ; try normal kill
     Local $bOk = ProcessClose($iPID)
 
+    ; if it survives, go full Windows taskkill /F
     If Not $bOk Then
-        ; force kill
         Local $sCmd = 'taskkill /PID ' & $iPID & ' /F'
         Local $pidTk = Run(@ComSpec & " /c " & $sCmd, "", @SW_HIDE, $STDOUT_CHILD)
-        If $pidTk Then
-            ProcessWaitClose($pidTk)
-        EndIf
+        If $pidTk Then ProcessWaitClose($pidTk)
     EndIf
 
     Sleep(300)
     _UpdateProcessList()
 EndFunc
 
-; ======================================================================
+; ==========================
 ;  NETWORK DETAILS
-; ======================================================================
+; ==========================
 
 Func _UpdateNetworkDetails()
     Local $sOut = ""
@@ -647,9 +618,9 @@ Func _UpdateNetworkDetails()
     GUICtrlSetData($g_txtNetDetails, $sOut)
 EndFunc
 
-; ======================================================================
+; ==========================
 ;  SYSTEM INFO
-; ======================================================================
+; ==========================
 
 Func _UpdateSystemInfo()
     Local $sOut = ""
@@ -692,9 +663,9 @@ Func _UpdateSystemInfo()
     GUICtrlSetData($g_txtSysInfo, $sOut)
 EndFunc
 
-; ======================================================================
+; ==========================
 ;  EXPORT REPORT
-; ======================================================================
+; ==========================
 
 Func _ExportReport($format)
     Local $filter, $defaultExt
@@ -733,9 +704,9 @@ Func _ExportReport($format)
     MsgBox(64, "Export", "Report saved:" & @CRLF & $path)
 EndFunc
 
-; ======================================================================
+; ==========================
 ;  BASIC INFO HELPERS
-; ======================================================================
+; ==========================
 
 Func _GetCPUUsage()
     Local $oWMI = ObjGet("winmgmts:\\.\root\CIMV2")
@@ -764,7 +735,7 @@ Func _GetRAMUsage()
         EndIf
     EndIf
 
-    ; fallback MemGetStats
+    ; fallback if WMI fails
     Local $memStats = MemGetStats()
     Local $totalMB = Int($memStats[0] / 1024)
     Local $freeMB  = Int($memStats[1] / 1024)
@@ -824,7 +795,7 @@ Func _GetSecuritySummary()
     Local $sFW = "FW: Unknown"
     Local $sWU = "WU: Unknown"
 
-    ; --- AntiVirus (SecurityCenter2) ---
+    ; AntiVirus
     Local $oSC = ObjGet("winmgmts:\\.\root\SecurityCenter2")
     If Not @error Then
         Local $colAV = $oSC.ExecQuery("SELECT * FROM AntiVirusProduct")
@@ -838,7 +809,7 @@ Func _GetSecuritySummary()
         EndIf
     EndIf
 
-    ; --- Firewall (HNetCfg.FwPolicy2) ---
+    ; Firewall
     Local $oFW = ObjCreate("HNetCfg.FwPolicy2")
     If Not @error And IsObj($oFW) Then
         Local $onCount = 0
@@ -856,13 +827,13 @@ Func _GetSecuritySummary()
         EndSelect
     EndIf
 
-    ; --- Windows Update (service wuauserv via WMI) ---
+    ; Windows Update service
     Local $oWMI = ObjGet("winmgmts:\\.\root\CIMV2")
     If Not @error Then
         Local $colSvc = $oWMI.ExecQuery("SELECT * FROM Win32_Service WHERE Name='wuauserv'")
         If IsObj($colSvc) Then
             For $svc In $colSvc
-                $sWU = "WU: " & $svc.State  ; Running / Stopped
+                $sWU = "WU: " & $svc.State
                 ExitLoop
             Next
         EndIf
@@ -871,14 +842,15 @@ Func _GetSecuritySummary()
     Return $sAV & " | " & $sFW & " | " & $sWU
 EndFunc
 
-; ======================================================================
-;  TEMPERATURES (LibreHardwareMonitor hook)
-; ======================================================================
+; ==========================
+;  TEMPERATURES (OPTIONAL)
+; ==========================
 
 Func _GetTemperatureSummary()
-    ; ?e??µ??e? a??e?? lhm_temps.txt st? @ScriptDir µe ??aµµ??:
-    ; CPU=45
-    ; DISK=33
+    ; This is intentionally simple.
+    ; If you drop a file "lhm_temps.txt" next to the EXE, it will read:
+    ;   CPU=xx
+    ;   DISK=yy
     Local $sFile = @ScriptDir & "\lhm_temps.txt"
     If Not FileExists($sFile) Then
         Return "N/A (LibreHardwareMonitor)"
@@ -918,24 +890,24 @@ Func _GetTemperatureSummary()
     Return $s
 EndFunc
 
-; ======================================================================
-;  LIBRE HARDWARE MONITOR LAUNCH
-; ======================================================================
+; ==========================
+;  LIBRE HARDWARE MONITOR
+; ==========================
 
 Func _OpenLibreHardwareMonitor()
     Local $exe = @ScriptDir & "\LibreHardwareMonitor.exe"
     If Not FileExists($exe) Then
         MsgBox(48, "LibreHardwareMonitor", _
             "LibreHardwareMonitor.exe not found in:" & @CRLF & @ScriptDir & @CRLF & _
-            "Place LibreHardwareMonitor.exe there or edit the path in the code.")
+            "Put LibreHardwareMonitor.exe in the same folder or edit the path in the code.")
         Return
     EndIf
     ShellExecute($exe)
 EndFunc
 
-; ======================================================================
+; ==========================
 ;  OPEN HELP FILE
-; ======================================================================
+; ==========================
 
 Func _OpenHelpFile()
     Local $sHelp = @ScriptDir & "\HELP.txt"
@@ -945,6 +917,5 @@ Func _OpenHelpFile()
         Return
     EndIf
 
-    ; ?????µa µe Notepad
     ShellExecute("notepad.exe", '"' & $sHelp & '"')
 EndFunc
