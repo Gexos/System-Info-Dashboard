@@ -82,7 +82,7 @@ You can download pre-built binaries from the **Releases** page:
 
 - GitHub Releases: https://github.com/Gexos/System-Info-Dashboard/releases
 
-Look for the latest version (currently **v5.0.1**) and grab the `.exe` file.
+Look for the latest version (currently **v5.0.1**)
 
 The app is:
 
@@ -104,28 +104,6 @@ To build from source, you’ll need:
 
 - AutoIt + SciTE4AutoIt3
 - The included `.au3` script: `System_Info_Dashboard.au3`
-
----
-
-## Usage
-
-1. Download the latest `.exe` from the Releases page.
-2. Place it in a folder of your choice (e.g. `C:\Tools\SID\`).
-3. (Optional) Put `sysinfo.ico` and `logo.png` in the same folder for nicer icons.
-4. Run `System_Info_Dashboard.exe`.
-
-The app:
-
-- Shows the main dashboard window.
-- Adds a tray icon so you can hide/show the window.
-- Refreshes the dashboard every couple of seconds without freezing the UI.
-
-You can:
-
-- Use the **Main** menu to export reports, open the Process/Network/System windows, or exit.
-- Use the **Windows Tools** menu to open common admin tools.
-- Use the **Help** menu to open the help file or the About window.
-- Use **Settings → Toggle Dark Theme** if you want a slightly different background color.
 
 ---
 
@@ -158,20 +136,10 @@ This keeps the app simple and avoids depending directly on specific sensor libra
 
 ---
 
-## Help file
-
-If there is a `HELP.txt` in the same folder as the EXE:
-
-- **Help → Open Help** will open it in Notepad.
-
-If `HELP.txt` is missing, the app will show a small message telling you where to create it.
-
----
-
 ## Security notes
 
 - The app is **open source**:
-  - You can inspect the code in `System_Info_Dashboard.au3`.
+  - You can inspect the code in `SystemInfoDashboard.au3`.
   - You can build your own binary with AutoIt.
 - No network connections are made by the app itself (beyond standard Windows WMI/COM calls).
 - It only uses:
@@ -200,29 +168,6 @@ In most cases this is a **false positive**. Building the binary yourself from th
 You can also adjust refresh interval, colors, etc. directly in the script if you want to customize it.
 
 ---
-
-## Changelog (short)
-
-### v5.0.1 – UI + layout fixes
-
-- Fixed a small UI freeze/stutter when dragging the main window or using the menu.
-  - Dashboard refresh no longer runs via `AdlibRegister` while the window is being moved.
-  - Now uses a simple timer inside the main loop, so updates happen between GUI events.
-- Improved disk usage display:
-  - Each fixed drive is shown on its own line.
-  - The disk usage label is taller, so text for multiple drives is not collapsed.
-
-### v5.0.0 – Initial public release
-
-- First public release of System Info Dashboard:
-  - Main dashboard (CPU, RAM, disk, uptime, OS, time, network, security, temps).
-  - Process monitor with filtering and kill support.
-  - Network and system info windows (via WMI).
-  - Optional temperature support via LibreHardwareMonitor.
-  - Tray icon, dark theme toggle, About and Help windows.
-
----
-
 ## License
 
 See the `LICENSE` file in this repository for licensing details.
