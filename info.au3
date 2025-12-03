@@ -67,6 +67,7 @@ Global $ID_ABOUT_GITHUB  = -1
 
 Global $g_iRefreshMs = 2000
 Global $g_bDarkTheme = True
+Global $g_hLastUpdate = 0
 
 ; tray menu
 Global $g_idTrayShow, $g_idTrayExit
@@ -92,10 +93,13 @@ $g_idTrayShow = TrayCreateItem("Show " & $APP_NAME)
 $g_idTrayExit = TrayCreateItem("Exit")
 TraySetState()
 
+; fill dashboard once so it doesn't show "..."
+_UpdateMainDashboard()
+
 GUISetState(@SW_SHOW, $g_hMainGUI)
 
-; update main dashboard every X ms
-AdlibRegister("_UpdateMainDashboard", $g_iRefreshMs)
+; start timer for manual refresh (replaces AdlibRegister)
+$g_hLastUpdate = TimerInit()
 
 While 1
     Local $msg  = GUIGetMsg()
@@ -210,6 +214,12 @@ While 1
         Case $ID_SYS_REFRESH
             _UpdateSystemInfo()
     EndSwitch
+
+    ; refresh main dashboard every g_iRefreshMs ms (no Adlib, smoother dragging)
+    If TimerDiff($g_hLastUpdate) > $g_iRefreshMs Then
+        _UpdateMainDashboard()
+        $g_hLastUpdate = TimerInit()
+    EndIf
 WEnd
 
 ; ==========================
@@ -280,45 +290,46 @@ Func _CreateMainGUI()
     GUICtrlSetGraphic($gfxBorder, $GUI_GR_RECT, 0, 0, 690, 300)
 
     ; labels
-    Local $lblCPUtxt  = GUICtrlCreateLabel("CPU Usage:",       30,  75, 120, 22)
-    Local $lblRAMtxt  = GUICtrlCreateLabel("RAM Usage:",       30, 100, 120, 22)
-    Local $lblDisktxt = GUICtrlCreateLabel("Disk Usage:",      30, 125, 120, 22)
-    Local $lblOStxt   = GUICtrlCreateLabel("OS Version:",      30, 150, 120, 22)
-    Local $lblUptxt   = GUICtrlCreateLabel("System Uptime:",   30, 175, 120, 22)
-    Local $lblTimetxt = GUICtrlCreateLabel("Current Time:",    30, 200, 120, 22)
-    Local $lblNettxt  = GUICtrlCreateLabel("Network:",         30, 225, 120, 22)
-    Local $lblSectxt  = GUICtrlCreateLabel("Security:",        30, 250, 120, 22)
-    Local $lblTempstxt= GUICtrlCreateLabel("Temperatures:",    30, 275, 120, 22)
+    Local $lblCPUtxt   = GUICtrlCreateLabel("CPU Usage:",       30,  75, 120, 22)
+    Local $lblRAMtxt   = GUICtrlCreateLabel("RAM Usage:",       30, 100, 120, 22)
+    Local $lblDisktxt  = GUICtrlCreateLabel("Disk Usage:",      30, 125, 120, 22)
+    Local $lblOStxt    = GUICtrlCreateLabel("OS Version:",      30, 170, 120, 22)
+    Local $lblUptxt    = GUICtrlCreateLabel("System Uptime:",   30, 195, 120, 22)
+    Local $lblTimetxt  = GUICtrlCreateLabel("Current Time:",    30, 220, 120, 22)
+    Local $lblNettxt   = GUICtrlCreateLabel("Network:",         30, 245, 120, 22)
+    Local $lblSectxt   = GUICtrlCreateLabel("Security:",        30, 270, 120, 22)
+    Local $lblTempstxt = GUICtrlCreateLabel("Temperatures:",    30, 295, 120, 22)
 
-    GUICtrlSetColor($lblCPUtxt,  0xFFFFFF)
-    GUICtrlSetColor($lblRAMtxt,  0xFFFFFF)
-    GUICtrlSetColor($lblDisktxt, 0xFFFFFF)
-    GUICtrlSetColor($lblOStxt,   0xFFFFFF)
-    GUICtrlSetColor($lblUptxt,   0xFFFFFF)
-    GUICtrlSetColor($lblTimetxt, 0xFFFFFF)
-    GUICtrlSetColor($lblNettxt,  0xFFFFFF)
-    GUICtrlSetColor($lblSectxt,  0xFFFFFF)
-    GUICtrlSetColor($lblTempstxt,0xFFFFFF)
+    GUICtrlSetColor($lblCPUtxt,   0xFFFFFF)
+    GUICtrlSetColor($lblRAMtxt,   0xFFFFFF)
+    GUICtrlSetColor($lblDisktxt,  0xFFFFFF)
+    GUICtrlSetColor($lblOStxt,    0xFFFFFF)
+    GUICtrlSetColor($lblUptxt,    0xFFFFFF)
+    GUICtrlSetColor($lblTimetxt,  0xFFFFFF)
+    GUICtrlSetColor($lblNettxt,   0xFFFFFF)
+    GUICtrlSetColor($lblSectxt,   0xFFFFFF)
+    GUICtrlSetColor($lblTempstxt, 0xFFFFFF)
 
     $g_lblCPU    = GUICtrlCreateLabel("...", 160,  75, 520, 22)
     $g_lblRAM    = GUICtrlCreateLabel("...", 160, 100, 520, 22)
-    $g_lblDisk   = GUICtrlCreateLabel("...", 160, 125, 520, 22)
-    $g_lblOS     = GUICtrlCreateLabel(@OSVersion & " (" & @OSArch & ")", 160, 150, 520, 22)
-    $g_lblUptime = GUICtrlCreateLabel("...", 160, 175, 520, 22)
-    $g_lblTime   = GUICtrlCreateLabel("...", 160, 200, 520, 22)
-    $g_lblNet    = GUICtrlCreateLabel("...", 160, 225, 520, 22)
-    $g_lblSec    = GUICtrlCreateLabel("...", 160, 250, 520, 22)
-    $g_lblTemps  = GUICtrlCreateLabel("...", 160, 275, 520, 22)
+    ; give disk more height for multi-line drive list
+    $g_lblDisk   = GUICtrlCreateLabel("...", 160, 125, 520, 44)
+    $g_lblOS     = GUICtrlCreateLabel(@OSVersion & " (" & @OSArch & ")", 160, 170, 520, 22)
+    $g_lblUptime = GUICtrlCreateLabel("...", 160, 195, 520, 22)
+    $g_lblTime   = GUICtrlCreateLabel("...", 160, 220, 520, 22)
+    $g_lblNet    = GUICtrlCreateLabel("...", 160, 245, 520, 22)
+    $g_lblSec    = GUICtrlCreateLabel("...", 160, 270, 520, 22)
+    $g_lblTemps  = GUICtrlCreateLabel("...", 160, 295, 520, 22)
 
-    GUICtrlSetColor($g_lblCPU,   0xFFFFFF)
-    GUICtrlSetColor($g_lblRAM,   0xFFFFFF)
-    GUICtrlSetColor($g_lblDisk,  0xFFFFFF)
-    GUICtrlSetColor($g_lblOS,    0xFFFFFF)
-    GUICtrlSetColor($g_lblUptime,0xFFFFFF)
-    GUICtrlSetColor($g_lblTime,  0xFFFFFF)
-    GUICtrlSetColor($g_lblNet,   0xFFFFFF)
-    GUICtrlSetColor($g_lblSec,   0xFFFFFF)
-    GUICtrlSetColor($g_lblTemps, 0xFFFFFF)
+    GUICtrlSetColor($g_lblCPU,    0xFFFFFF)
+    GUICtrlSetColor($g_lblRAM,    0xFFFFFF)
+    GUICtrlSetColor($g_lblDisk,   0xFFFFFF)
+    GUICtrlSetColor($g_lblOS,     0xFFFFFF)
+    GUICtrlSetColor($g_lblUptime, 0xFFFFFF)
+    GUICtrlSetColor($g_lblTime,   0xFFFFFF)
+    GUICtrlSetColor($g_lblNet,    0xFFFFFF)
+    GUICtrlSetColor($g_lblSec,    0xFFFFFF)
+    GUICtrlSetColor($g_lblTemps,  0xFFFFFF)
 
     ; version text at bottom left
     $g_lblVersion = GUICtrlCreateLabel("GexSoft – " & $APP_NAME & " v" & $APP_VER & " (by gexos)", 20, 380, 600, 22)
@@ -494,14 +505,14 @@ EndFunc
 ; ==========================
 
 Func _UpdateMainDashboard()
-    Local $sCPU   = _GetCPUUsage()
-    Local $sRAM   = _GetRAMUsage()
-    Local $sDisk  = _GetDiskUsageSummary()
-    Local $sUpt   = _GetSystemUptime()
-    Local $sTime  = _NowCalc()
-    Local $sNet   = _GetNetworkSummary()
-    Local $sSec   = _GetSecuritySummary()
-    Local $sTemp  = _GetTemperatureSummary()
+    Local $sCPU    = _GetCPUUsage()
+    Local $sRAM    = _GetRAMUsage()
+    Local $sDisk   = _GetDiskUsageSummary()
+    Local $sUpt    = _GetSystemUptime()
+    Local $sTime   = _NowCalc()
+    Local $sNet    = _GetNetworkSummary()
+    Local $sSec    = _GetSecuritySummary()
+    Local $sTemp   = _GetTemperatureSummary()
 
     GUICtrlSetData($g_lblCPU,    $sCPU)
     GUICtrlSetData($g_lblRAM,    $sRAM)
@@ -755,12 +766,17 @@ Func _GetDiskUsageSummary()
         Local $total = DriveSpaceTotal($drive)
         Local $free  = DriveSpaceFree($drive)
         If $total = "" Or $free = "" Then ContinueLoop
+
         Local $used = $total - $free
         Local $p = 0
         If $total > 0 Then $p = Int(($used / $total) * 100)
-        $s &= $drives[$i] & ": " & $p & "% (" & Int($used) & " GB / " & Int($total) & " GB)  "
+
+        ; one line per drive, so text doesn't get squashed
+        $s &= $drives[$i] & ": " & $p & "% (" & Int($used) & " GB / " & Int($total) & " GB)" & @CRLF
     Next
-    Return $s
+
+    If $s = "" Then Return "N/A"
+    Return StringStripWS($s, 2)
 EndFunc
 
 Func _GetSystemUptime()
@@ -847,7 +863,6 @@ EndFunc
 ; ==========================
 
 Func _GetTemperatureSummary()
-    ; This is intentionally simple.
     ; If you drop a file "lhm_temps.txt" next to the EXE, it will read:
     ;   CPU=xx
     ;   DISK=yy
