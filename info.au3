@@ -1,15 +1,15 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=..\..\gexos_apps\System info dashboard\sysinfo.ico
-#AutoIt3Wrapper_Outfile=SystemInfoDashboard.exe
-#AutoIt3Wrapper_Outfile_x64=SystemInfoDashboard_X64.exe
+#AutoIt3Wrapper_Outfile=SysInfoDash.exe
+#AutoIt3Wrapper_Outfile_x64=SysInfoDash_X64.exe
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
-#AutoIt3Wrapper_Res_Description=System Info Dashboard v5.0.0
-#AutoIt3Wrapper_Res_Fileversion=5.0.0.0
+#AutoIt3Wrapper_Res_Description=System Info Dashboard v5.0.1
+#AutoIt3Wrapper_Res_Fileversion=5.0.1.0
 #AutoIt3Wrapper_Res_ProductName=System Info Dashboard
-#AutoIt3Wrapper_Res_ProductVersion=5.0.0.0
+#AutoIt3Wrapper_Res_ProductVersion=5.0.1.0
 #AutoIt3Wrapper_Res_CompanyName=GexSoft
-#AutoIt3Wrapper_Res_Field=Comments|System Info Dashboard v5.0.0 by gexos
+#AutoIt3Wrapper_Res_Field=Comments|System Info Dashboard v5.0.1 by gexos
 #AutoIt3Wrapper_Run_AU3Check=n
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
@@ -32,7 +32,7 @@
 ; ==========================
 
 Global Const $APP_NAME = "System Info Dashboard"
-Global Const $APP_VER  = "5.0.0"
+Global Const $APP_VER  = "5.0.1"
 Global Const $GEXSOFT_ORANGE = 0xFF6600
 
 Global $g_hMainGUI, $g_hProcGUI, $g_hNetGUI, $g_hSysGUI, $g_hAboutGUI
@@ -71,9 +71,9 @@ Global $ID_ABOUT_WEB  = -1
 Global $ID_ABOUT_GEXSOFT = -1
 Global $ID_ABOUT_GITHUB  = -1
 
-Global $g_iRefreshMs = 2000
+Global $g_iRefreshMs = 2000      ; how often to refresh the main dashboard
 Global $g_bDarkTheme = True
-Global $g_hLastUpdate = 0
+Global $g_hLastUpdate = 0        ; timer handle for manual refresh
 
 ; tray menu
 Global $g_idTrayShow, $g_idTrayExit
@@ -233,7 +233,7 @@ WEnd
 ; ==========================
 
 Func _ComErrHandler($oError)
-    ; Just swallow COM errors so WMI weirdness doesn’t kill the app
+    ; Just ignore COM/WMI glitches so they don't kill the app
     Return 0
 EndFunc
 
@@ -587,10 +587,10 @@ Func _KillSelectedProcess()
 
     If $iAns <> 1 Then Return
 
-    ; try normal kill
+    ; try normal kill first
     Local $bOk = ProcessClose($iPID)
 
-    ; if it survives, go full Windows taskkill /F
+    ; if it survives, use taskkill /F
     If Not $bOk Then
         Local $sCmd = 'taskkill /PID ' & $iPID & ' /F'
         Local $pidTk = Run(@ComSpec & " /c " & $sCmd, "", @SW_HIDE, $STDOUT_CHILD)
@@ -777,7 +777,7 @@ Func _GetDiskUsageSummary()
         Local $p = 0
         If $total > 0 Then $p = Int(($used / $total) * 100)
 
-        ; one line per drive, so text doesn't get squashed
+        ; one line per drive, nice and readable
         $s &= $drives[$i] & ": " & $p & "% (" & Int($used) & " GB / " & Int($total) & " GB)" & @CRLF
     Next
 
