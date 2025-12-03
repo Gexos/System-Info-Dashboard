@@ -1,13 +1,19 @@
-#AutoIt3Wrapper_Icon=sysinfo.ico
-#AutoIt3Wrapper_Run_Au3Check=n  ; Au3Check off (too many custom things here.)
-
-; ==== VERSION INFO (tooltip + file properties) ====
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=..\..\gexos_apps\System info dashboard\sysinfo.ico
+#AutoIt3Wrapper_Outfile=SystemInfoDashboard.exe
+#AutoIt3Wrapper_Outfile_x64=SystemInfoDashboard_X64.exe
+#AutoIt3Wrapper_Compile_Both=y
+#AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=System Info Dashboard v5.0.0
 #AutoIt3Wrapper_Res_Fileversion=5.0.0.0
-#AutoIt3Wrapper_Res_ProductVersion=5.0.0.0
 #AutoIt3Wrapper_Res_ProductName=System Info Dashboard
+#AutoIt3Wrapper_Res_ProductVersion=5.0.0.0
 #AutoIt3Wrapper_Res_CompanyName=GexSoft
 #AutoIt3Wrapper_Res_Field=Comments|System Info Dashboard v5.0.0 by gexos
+#AutoIt3Wrapper_Run_AU3Check=n
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+
+; ==== VERSION INFO (tooltip + file properties) ====
 
 #include <GUIConstantsEx.au3>
 #include <WindowsConstants.au3>
