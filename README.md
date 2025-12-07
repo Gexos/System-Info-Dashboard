@@ -4,170 +4,124 @@
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
 ![Version](https://img.shields.io/badge/version-5.0.1-orange)
 
-# System Info Dashboard (Windows) – v5.0.1
+# System Info Dashboard (SID)
 
-System Info Dashboard is a small, portable system monitor for Windows.
+System Info Dashboard (SID) is a small, portable Windows utility written in AutoIt.  
+It gives you a quick, at-a-glance view of your system status and a simple process monitor in one clean window.
 
-It shows CPU/RAM/disk usage, uptime, OS details, network info, basic security status, and optional temperatures (via LibreHardwareMonitor). It also includes a simple process monitor and shortcuts to common Windows tools.
+> **Platform:** Windows 10/11  
+> **Type:** Portable EXE (no installer)  
+> **Source:** AutoIt `.au3` script included in this repository
 
 ---
 
 ## Features
 
-- **Main dashboard**
-  - CPU usage (via WMI)
-  - RAM usage (used / total, in MB and %)
-  - Disk usage per fixed drive
+- **System overview (main window)**
+  - CPU usage (live)
+  - RAM usage (used / total)
+  - Disk usage summary per drive (C:, D:, external drives, VHDs, etc.)
+  - OS version and architecture
   - System uptime
-  - Current date/time
-  - Network summary (hostname + IP)
-  - Basic security status:
-    - Antivirus product (from Windows Security Center)
-    - Windows Firewall state
-    - Windows Update service state
-  - Optional temperatures from LibreHardwareMonitor (`lhm_temps.txt`)
-
-- **Process Monitor window**
-  - List running processes with:
-    - Name
-    - PID
-    - Approx. memory usage (MB)
-  - Simple text filter (type part of the name)
-  - Button to kill the selected process
-    - Uses AutoIt's `ProcessClose` first
-    - Falls back to `taskkill /F` if needed
-
-- **Network Details window**
-  - Uses WMI (`Win32_NetworkAdapterConfiguration`) to show:
-    - Description
-    - MAC address
-    - IP address
-    - Subnet
-    - Gateway
-    - DNS server(s)
-
-- **System Information window**
-  - Operating system details:
-    - Caption
-    - Version
-    - Build
-    - Install date
-    - Last boot time
-  - Computer system details:
-    - Manufacturer
-    - Model
-    - Total physical memory
-    - Number of physical CPUs
-    - Number of logical processors
-
-- **Other goodies**
-  - Export a **TXT** or **HTML** report of the main dashboard
-  - Dark theme toggle
-  - Tray icon with “show/hide” behavior
-  - Help + About windows
-  - Shortcuts to common Windows tools:
-    - Task Manager
-    - Device Manager
-    - Event Viewer
-    - Services
-    - Disk Management
-    - System Information (msinfo32)
-    - Command Prompt
+  - Current date and time
+  - Basic network info
+  - Simple security status summary (firewall/AV status where available)
+- **Process Monitor**
+  - List running processes with name, PID and memory usage
+  - Filter by process name
+  - Refresh list on demand
+  - **Kill Selected** with confirmation dialog (improved handling to avoid “no process selected” issues)
+- **Temperatures (optional)**
+  - Designed to work together with LibreHardwareMonitor
+  - SID can open LibreHardwareMonitor so you can see temperatures and sensors when needed
+- **Portable & lightweight**
+  - Single EXE, no installer
+  - No services, no scheduled tasks
+  - No registry modifications required for normal use
 
 ---
 
-## Downloads
+## Download
 
-You can download pre-built binaries from the **Releases** page:
+You can download:
 
-- GitHub Releases: https://github.com/Gexos/System-Info-Dashboard/releases
+- The compiled **SID.exe**  
+- The full **AutoIt source** (`System_Info_Dashboard_SID.au3`)
 
-Look for the latest version (currently **v5.0.1**)
+from the **Releases** section of this repository.
 
-The app is:
-
-- **Portable** (no installer, no drivers)
-- **User-mode only** (no kernel hooks)
-- Designed for **Windows 10/11**
-
-If you prefer, you can also clone the repo and build your own executable from the source code using AutoIt.
+> Tip: If you don’t trust prebuilt binaries, you can open the `.au3` source in SciTE and compile SID yourself with AutoIt.
 
 ---
 
-## Requirements
+## How to use
 
-- Windows 10 or Windows 11
-- No extra dependencies for the main features
-- Optional: LibreHardwareMonitor if you want temperature readings
+1. **Run `SID.exe`**
+   - No installation needed. You can run it from any folder, including a USB stick.
 
-To build from source, you’ll need:
+2. **Main dashboard**
+   - The main window shows CPU, RAM, disk usage, OS, uptime, time, network and a short security summary.
+   - Disk usage has a dedicated multi-line area so multiple drives (internal, external, VHDs) are displayed clearly.
 
-- AutoIt + SciTE4AutoIt3
-- The included `.au3` script: `System_Info_Dashboard.au3`
+3. **Process Monitor**
+   - Open **Tools → Process Monitor** (or the corresponding button/menu in the app).
+   - You can:
+     - Filter processes by name.
+     - Select a process and click **Kill Selected**.
+   - SID shows a confirmation dialog before terminating a process.
+   - If Windows/AutoIt loses track of the selection, SID safely falls back to the first row and still shows a confirmation dialog, so you always know what you’re about to kill.
 
----
-
-## Optional: Temperatures via LibreHardwareMonitor
-
-System Info Dashboard does **not** talk directly to hardware sensors.  
-Instead, it can read a simple text file produced by LibreHardwareMonitor.
-
-If you want temperature readings on the main dashboard:
-
-1. Download `LibreHardwareMonitor.exe` and put it next to `System_Info_Dashboard.exe`.
-2. (Optional but recommended) Create a file named `lhm_temps.txt` in the same folder with lines like:
-
-   ```text
-   CPU=57
-   DISK=34
-   ```
-
-3. The app will read that file and show:
-   - `CPU: 57°C | Disk: 34°C`  
-     or whatever values you provide.
-
-If the file is missing or empty, the dashboard will simply show:
-
-```text
-N/A (LibreHardwareMonitor)
-```
-
-This keeps the app simple and avoids depending directly on specific sensor libraries.
+4. **Temperatures (optional)**
+   - Download LibreHardwareMonitor and place it somewhere on your system.
+   - Use the SID menu/option to open LibreHardwareMonitor when you want detailed temperature and sensor readings.
 
 ---
 
-## Security notes
+## Security / Antivirus (false positives)
 
-- The app is **open source**:
-  - You can inspect the code in `SystemInfoDashboard.au3`.
-  - You can build your own binary with AutoIt.
-- No network connections are made by the app itself (beyond standard Windows WMI/COM calls).
-- It only uses:
-  - WMI queries for system info
-  - Standard Windows APIs and tools
-- You can verify hashes for any EXE release you download if you like (e.g. with `certutil` on Windows).
+SID is written in **AutoIt**, which unfortunately is sometimes abused by malware authors.  
+Because of that, some antivirus products may occasionally flag **legitimate AutoIt tools** as suspicious or as a *generic* threat, even when the code is clean.
 
-Some antivirus products may flag small custom tools like this (especially if built with AutoIt) as suspicious or “generic” detections.  
-In most cases this is a **false positive**. Building the binary yourself from the source is a good way to feel comfortable.
+A few important points:
+
+- The full **source code** (`.au3`) is included in this repository.
+- You can **review** the code and **compile the EXE yourself** using the official AutoIt tools.
+- SID does **not** install drivers, services, or scheduled tasks.
+- SID does **not** make unsolicited network connections.
+
+If your antivirus flags SID:
+
+1. Make sure you downloaded it from the **official repository / GexSoft links**.
+2. Verify the file hash against the hash provided on the download page (if available).
+3. If you are still unsure, compile the EXE yourself from the included `.au3` script.
+
+---
+
+## Known limitations / notes
+
+- Very tiny volumes (e.g. test VHDs of only a few MB) may show rounded capacity values when converted to GB.  
+  This doesn’t affect normal use on regular system drives.
+- Some advanced security / AV status checks depend on Windows APIs and may not be available in all environments.
 
 ---
 
-## Building from source
+## Version & changelog (short)
 
-1. Install AutoIt and SciTE4AutoIt3.
-2. Clone the repository:
+Current version: **v5.0.2** (SID)
 
-   ```bash
-   git clone https://github.com/Gexos/System-Info-Dashboard.git
-   ```
+Key recent changes:
 
-3. Open `System_Info_Dashboard.au3` in SciTE.
-4. Make sure `sysinfo.ico` (and optionally `logo.png`) are in the same directory.
-5. Use the SciTE “Compile” or “Build” option to produce an `.exe`.
+- Fixed **Process Monitor → Kill Selected** sometimes acting as if no process was selected.
+- Improved handling of selection after refresh so the process list doesn’t look “cleared”.
+- Adjusted disk usage display in the main window so multiple drives don’t appear collapsed.
 
-You can also adjust refresh interval, colors, etc. directly in the script if you want to customize it.
+For a full changelog, see `CHANGELOG.md` or the Releases page.
 
 ---
-## License
 
-See the `LICENSE` file in this repository for licensing details.
+## License & credits
+
+- Copyright © GexSoft  
+- Written in AutoIt by Giorgos (Gexos)
+
+See the repository for license information, usage terms, and contribution guidelines.
