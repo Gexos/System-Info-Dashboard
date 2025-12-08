@@ -4,12 +4,12 @@
 #AutoIt3Wrapper_Outfile_x64=SysInfoDash_X64.exe
 #AutoIt3Wrapper_Compile_Both=y
 #AutoIt3Wrapper_UseX64=y
-#AutoIt3Wrapper_Res_Description=System Info Dashboard v5.0.1
-#AutoIt3Wrapper_Res_Fileversion=5.0.1.0
+#AutoIt3Wrapper_Res_Description=System Info Dashboard v5.0.2
+#AutoIt3Wrapper_Res_Fileversion=5.0.2.0
 #AutoIt3Wrapper_Res_ProductName=System Info Dashboard
-#AutoIt3Wrapper_Res_ProductVersion=5.0.1.0
+#AutoIt3Wrapper_Res_ProductVersion=5.0.2.0
 #AutoIt3Wrapper_Res_CompanyName=GexSoft
-#AutoIt3Wrapper_Res_Field=Comments|System Info Dashboard v5.0.1 by gexos
+#AutoIt3Wrapper_Res_Field=Comments|System Info Dashboard v5.0.2 by gexos
 #AutoIt3Wrapper_Run_AU3Check=n
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
@@ -32,7 +32,7 @@
 ; ==========================
 
 Global Const $APP_NAME = "System Info Dashboard"
-Global Const $APP_VER  = "5.0.1"
+Global Const $APP_VER  = "5.0.2"
 Global Const $GEXSOFT_ORANGE = 0xFF6600
 
 Global $g_hMainGUI, $g_hProcGUI, $g_hNetGUI, $g_hSysGUI, $g_hAboutGUI
@@ -66,7 +66,7 @@ Global _
     $ID_WT_CMD, _
     $ID_SET_THEME
 
-; About window clickable labels – set later
+; About window clickable labels  set later
 Global $ID_ABOUT_WEB  = -1
 Global $ID_ABOUT_GEXSOFT = -1
 Global $ID_ABOUT_GITHUB  = -1
@@ -78,7 +78,7 @@ Global $g_hLastUpdate = 0        ; timer handle for manual refresh
 ; tray menu
 Global $g_idTrayShow, $g_idTrayExit
 
-; COM error handler (so WMI/COM glitches don’t crash the app)
+; COM error handler (so WMI/COM glitches dont crash the app)
 Global $g_oComError = ObjEvent("AutoIt.Error", "_ComErrHandler")
 
 ; ==========================
@@ -299,12 +299,12 @@ Func _CreateMainGUI()
     Local $lblCPUtxt   = GUICtrlCreateLabel("CPU Usage:",       30,  75, 120, 22)
     Local $lblRAMtxt   = GUICtrlCreateLabel("RAM Usage:",       30, 100, 120, 22)
     Local $lblDisktxt  = GUICtrlCreateLabel("Disk Usage:",      30, 125, 120, 22)
-    Local $lblOStxt    = GUICtrlCreateLabel("OS Version:",      30, 170, 120, 22)
-    Local $lblUptxt    = GUICtrlCreateLabel("System Uptime:",   30, 195, 120, 22)
-    Local $lblTimetxt  = GUICtrlCreateLabel("Current Time:",    30, 220, 120, 22)
-    Local $lblNettxt   = GUICtrlCreateLabel("Network:",         30, 245, 120, 22)
-    Local $lblSectxt   = GUICtrlCreateLabel("Security:",        30, 270, 120, 22)
-    Local $lblTempstxt = GUICtrlCreateLabel("Temperatures:",    30, 295, 120, 22)
+    Local $lblOStxt    = GUICtrlCreateLabel("OS Version:",      30, 192, 120, 22)
+    Local $lblUptxt    = GUICtrlCreateLabel("System Uptime:",   30, 217, 120, 22)
+    Local $lblTimetxt  = GUICtrlCreateLabel("Current Time:",    30, 242, 120, 22)
+    Local $lblNettxt   = GUICtrlCreateLabel("Network:",         30, 267, 120, 22)
+    Local $lblSectxt   = GUICtrlCreateLabel("Security:",        30, 292, 120, 22)
+    Local $lblTempstxt = GUICtrlCreateLabel("Temperatures:",    30, 317, 120, 22)
 
     GUICtrlSetColor($lblCPUtxt,   0xFFFFFF)
     GUICtrlSetColor($lblRAMtxt,   0xFFFFFF)
@@ -318,14 +318,14 @@ Func _CreateMainGUI()
 
     $g_lblCPU    = GUICtrlCreateLabel("...", 160,  75, 520, 22)
     $g_lblRAM    = GUICtrlCreateLabel("...", 160, 100, 520, 22)
-    ; give disk more height for multi-line drive list
-    $g_lblDisk   = GUICtrlCreateLabel("...", 160, 125, 520, 44)
-    $g_lblOS     = GUICtrlCreateLabel(@OSVersion & " (" & @OSArch & ")", 160, 170, 520, 22)
-    $g_lblUptime = GUICtrlCreateLabel("...", 160, 195, 520, 22)
-    $g_lblTime   = GUICtrlCreateLabel("...", 160, 220, 520, 22)
-    $g_lblNet    = GUICtrlCreateLabel("...", 160, 245, 520, 22)
-    $g_lblSec    = GUICtrlCreateLabel("...", 160, 270, 520, 22)
-    $g_lblTemps  = GUICtrlCreateLabel("...", 160, 295, 520, 22)
+    ; give disk more height for multi-line drive list (up to ~3 lines)
+    $g_lblDisk   = GUICtrlCreateLabel("...", 160, 125, 520, 66)
+    $g_lblOS     = GUICtrlCreateLabel(@OSVersion & " (" & @OSArch & ")", 160, 195, 520, 22)
+    $g_lblUptime = GUICtrlCreateLabel("...", 160, 220, 520, 22)
+    $g_lblTime   = GUICtrlCreateLabel("...", 160, 245, 520, 22)
+    $g_lblNet    = GUICtrlCreateLabel("...", 160, 270, 520, 22)
+    $g_lblSec    = GUICtrlCreateLabel("...", 160, 295, 520, 22)
+    $g_lblTemps  = GUICtrlCreateLabel("...", 160, 320, 520, 22)
 
     GUICtrlSetColor($g_lblCPU,    0xFFFFFF)
     GUICtrlSetColor($g_lblRAM,    0xFFFFFF)
@@ -338,7 +338,9 @@ Func _CreateMainGUI()
     GUICtrlSetColor($g_lblTemps,  0xFFFFFF)
 
     ; version text at bottom left
-    $g_lblVersion = GUICtrlCreateLabel("GexSoft – " & $APP_NAME & " v" & $APP_VER & " (by gexos)", 20, 380, 600, 22)
+    $g_lblVersion = GUICtrlCreateLabel("GexSoft  " & $APP_NAME & " v" & $APP_VER & " (by gexos)", 20, 380, 600, 22)
+    GUICtrlSetColor($g_lblVersion, 0xFFFFFF)
+$g_lblVersion = GUICtrlCreateLabel("GexSoft  " & $APP_NAME & " v" & $APP_VER & " (by gexos)", 20, 380, 600, 22)
     GUICtrlSetColor($g_lblVersion, 0xFFFFFF)
 EndFunc
 
@@ -564,10 +566,32 @@ EndFunc
 
 Func _KillSelectedProcess()
     Local $hLV = GUICtrlGetHandle($g_lvProc)
+
+    ; Try to get the selected index
     Local $iIndex = _GUICtrlListView_GetNextItem($hLV, -1, $LVNI_SELECTED)
+
+    ; If AutoIt thinks nothing is selected, try to pick a sensible default row
     If $iIndex = -1 Then
-        MsgBox(48, "Kill Process", "No process selected.")
-        Return
+        Local $iCount = _GUICtrlListView_GetItemCount($hLV)
+        If $iCount = 0 Then
+            MsgBox(48, "Kill Process", "No process selected.")
+            Return
+        EndIf
+
+        ; Find the first row with a valid PID (> 0), skip things like Idle (PID 0)
+        For $i = 0 To $iCount - 1
+            Local $sTestPID = _GUICtrlListView_GetItemText($hLV, $i, 1)
+            If Number($sTestPID) > 0 Then
+                $iIndex = $i
+                ExitLoop
+            EndIf
+        Next
+
+        ; Still nothing reasonable found
+        If $iIndex = -1 Then
+            MsgBox(48, "Kill Process", "No valid process selected.")
+            Return
+        EndIf
     EndIf
 
     Local $sName = _GUICtrlListView_GetItemText($hLV, $iIndex, 0)
@@ -575,7 +599,7 @@ Func _KillSelectedProcess()
     Local $iPID  = Number($sPID)
 
     If $iPID <= 0 Then
-        MsgBox(48, "Kill Process", "Invalid PID.")
+        MsgBox(48, "Kill Process", "This process cannot be terminated (PID " & $sPID & ").")
         Return
     EndIf
 
@@ -599,7 +623,18 @@ Func _KillSelectedProcess()
 
     Sleep(300)
     _UpdateProcessList()
+
+    ; After refresh, keep a visible selection if there are still rows
+    $hLV = GUICtrlGetHandle($g_lvProc)
+    Local $iCount2 = _GUICtrlListView_GetItemCount($hLV)
+    If $iCount2 > 0 Then
+        If $iIndex >= $iCount2 Then $iIndex = $iCount2 - 1
+        _GUICtrlListView_SetItemSelected($hLV, $iIndex, True, True)
+        GUICtrlSetState($g_lvProc, $GUI_FOCUS)
+    EndIf
 EndFunc
+
+
 
 ; ==========================
 ;  NETWORK DETAILS
@@ -902,10 +937,10 @@ Func _GetTemperatureSummary()
     If $cpu = "" And $disk = "" Then Return "N/A (LibreHardwareMonitor)"
 
     Local $s = ""
-    If $cpu <> "" Then $s &= "CPU: " & $cpu & "°C"
+    If $cpu <> "" Then $s &= "CPU: " & $cpu & "C"
     If $disk <> "" Then
         If $s <> "" Then $s &= "  |  "
-        $s &= "Disk: " & $disk & "°C"
+        $s &= "Disk: " & $disk & "C"
     EndIf
 
     Return $s
