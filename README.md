@@ -2,7 +2,7 @@
 
 ![AutoIt](https://img.shields.io/badge/built%20with-AutoIt-1abc9c)
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
-![Version](https://img.shields.io/badge/version-5.0.1-orange)
+![Version](https://img.shields.io/badge/version-5.0.2-orange)
 
 # System Info Dashboard (SID)
 
@@ -45,8 +45,8 @@ It gives you a quick, at-a-glance view of your system status and a simple proces
 
 You can download:
 
-- The compiled **SID.exe**  
-- The full **AutoIt source** (`System_Info_Dashboard_SID.au3`)
+- The compiled **SysInfoDash.exe**  
+- The full **AutoIt source** (`System_Info_Dashboard.au3`)
 
 from the **Releases** section of this repository.
 
@@ -56,7 +56,7 @@ from the **Releases** section of this repository.
 
 ## How to use
 
-1. **Run `SID.exe`**
+1. **Run `SysInfoDash.exe`**
    - No installation needed. You can run it from any folder, including a USB stick.
 
 2. **Main dashboard**
@@ -103,25 +103,7 @@ If your antivirus flags SID:
   This doesn’t affect normal use on regular system drives.
 - Some advanced security / AV status checks depend on Windows APIs and may not be available in all environments.
 
----
-
-## Version & changelog (short)
-
-Current version: **v5.0.2** (SID)
-
-Key recent changes:
-
-- Fixed **Process Monitor → Kill Selected** sometimes acting as if no process was selected.
-- Improved handling of selection after refresh so the process list doesn’t look “cleared”.
-- Adjusted disk usage display in the main window so multiple drives don’t appear collapsed.
-
-For a full changelog, see `CHANGELOG.md` or the Releases page.
-
----
-
-## License & credits
-
-- Copyright © GexSoft  
-- Written in AutoIt by Giorgos (Gexos)
+--- 
+- Written in AutoIt by Giorgos Xanthopoulos (gexos)
 
 See the repository for license information, usage terms, and contribution guidelines.
