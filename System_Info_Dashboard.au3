@@ -9,7 +9,7 @@
 #AutoIt3Wrapper_Res_ProductName=System Info Dashboard
 #AutoIt3Wrapper_Res_ProductVersion=5.0.2.0
 #AutoIt3Wrapper_Res_CompanyName=GexSoft
-#AutoIt3Wrapper_Res_Field=Comments|System Info Dashboard v5.0.2 by gexos
+#AutoIt3Wrapper_Res_Field=Comments|System Info Dashboard v5.0.2 by gexo
 #AutoIt3Wrapper_Run_AU3Check=n
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
