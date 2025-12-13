@@ -64,7 +64,7 @@ from the **Releases** section of this repository.
    - Disk usage has a dedicated multi-line area so multiple drives (internal, external, VHDs) are displayed clearly.
 
 3. **Process Monitor**
-   - Open **Tools → Process Monitor** (or the corresponding button/menu in the app).
+   - Open **Tools >> Process Monitor** (or the corresponding button/menu in the app).
    - You can:
      - Filter processes by name.
      - Select a process and click **Kill Selected**.
@@ -91,13 +91,13 @@ A few important points:
 
 If your antivirus flags SID:
 
-1. Make sure you downloaded it from the **official repository / GexSoft links**.
+1. Make sure you downloaded it from the **official repository/GexSoft links**.
 2. Verify the file hash against the hash provided on the download page (if available).
 3. If you are still unsure, compile the EXE yourself from the included `.au3` script.
 
 ---
 
-## Known limitations / notes
+## Known limitations/notes
 
 - Very tiny volumes (e.g. test VHDs of only a few MB) may show rounded capacity values when converted to GB.  
   This doesn’t affect normal use on regular system drives.
