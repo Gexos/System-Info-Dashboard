@@ -3,6 +3,7 @@
 ![AutoIt](https://img.shields.io/badge/built%20with-AutoIt-1abc9c)
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
 ![Version](https://img.shields.io/badge/version-5.0.2-orange)
+[![Ko-fi](https://img.shields.io/badge/Support%20me-Ko--fi-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/gexos)
 
 # System Info Dashboard (SID)
 
